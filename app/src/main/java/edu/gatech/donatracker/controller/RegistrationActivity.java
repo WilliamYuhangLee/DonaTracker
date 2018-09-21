@@ -2,6 +2,7 @@ package edu.gatech.donatracker.controller;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
 import edu.gatech.donatracker.R;
 
@@ -11,6 +12,10 @@ public class RegistrationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+    }
+
+    public void onClickCancel(View view) {
+        finish();
     }
 
 

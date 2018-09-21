@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "547371692035",
+    "firebase_url": "https://donatracker-1537551176241.firebaseio.com",
+    "project_id": "donatracker-1537551176241",
+    "storage_bucket": "donatracker-1537551176241.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:547371692035:android:d3b1a01e9370b543",
+        "android_client_info": {
+          "package_name": "edu.gatech.donatracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "547371692035-iuehq232if101u6gmomkcdf6rela2f8h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjuP_mQ0AdRkNK-PZAJBCvDp9ekZ6LWXs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
