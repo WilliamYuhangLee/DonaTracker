@@ -11,13 +11,17 @@ import edu.gatech.donatracker.R;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private Button logOutButton = (Button) findViewById(R.id.button_home_logout);
+    private Button logOutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        // Initialize references
+        logOutButton = (Button) findViewById(R.id.button_home_logout);
+
+        // Set handlers
         logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
