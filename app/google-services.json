@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "547371692035-b13osksr3lam6vom2hdpvl8gqsgr3lrr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.gatech.donatracker",
+            "certificate_hash": "3e6a7e58ff714d6d68875e048430c7c7a897bd1f"
+          }
+        },
+        {
           "client_id": "547371692035-iuehq232if101u6gmomkcdf6rela2f8h.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "547371692035-iuehq232if101u6gmomkcdf6rela2f8h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
