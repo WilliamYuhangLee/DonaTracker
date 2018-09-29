@@ -1,12 +1,11 @@
 package edu.gatech.donatracker.controller;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -18,8 +17,8 @@ import edu.gatech.donatracker.R;
 
 public class RegistrationActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
     private final String TAG = "RegistrationActivity.class";
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +29,8 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     public void onClickRegister(View view) {
-        String password = ((EditText)findViewById(R.id.editText_registration_password)).getText().toString();
-        String email = ((EditText)findViewById(R.id.editText_registration_email)).getText().toString();
+        String password = ((EditText) findViewById(R.id.editText_registration_password)).getText().toString();
+        String email = ((EditText) findViewById(R.id.editText_registration_email)).getText().toString();
 
 
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -42,16 +41,11 @@ public class RegistrationActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-//                            updateUI(user);
+                            //TODO: go to the HomeActivity
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-//                            Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
-//                                    Toast.LENGTH_SHORT).show();
-//                            updateUI(null);
                         }
-
-                        // ...
                     }
                 });
     }

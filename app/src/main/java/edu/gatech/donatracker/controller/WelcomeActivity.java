@@ -1,8 +1,8 @@
 package edu.gatech.donatracker.controller;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,12 +18,6 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
         mAuth = FirebaseAuth.getInstance();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        FirebaseUser user = mAuth.getCurrentUser();
     }
 
     public void onClickSignUp(View view) {

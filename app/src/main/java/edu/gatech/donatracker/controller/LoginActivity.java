@@ -3,22 +3,20 @@ package edu.gatech.donatracker.controller;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
-
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -53,17 +51,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
-
-    private FirebaseAuth mAuth;
     private final String TAG = "LoginActivity.class";
-
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "user:pass"
-    };
+    private FirebaseAuth mAuth;
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -293,6 +282,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailView.setAdapter(adapter);
     }
 
+    public void onClickCancel(View view) {
+        finish();
+    }
 
     private interface ProfileQuery {
         String[] PROJECTION = {
@@ -302,10 +294,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         int ADDRESS = 0;
         int IS_PRIMARY = 1;
-    }
-
-    public void onClickCancel(View view) {
-        finish();
     }
 
     /**
@@ -324,67 +312,29 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected Void doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
             mAuth.signInWithEmailAndPassword(mEmail, mPassword)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
+                            mAuthTask = null;
+                            showProgress(false);
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d(TAG, "signInWithEmail:success");
                                 mAuthTask = null;
                                 showProgress(false);
-//                                FirebaseUser user = mAuth.getCurrentUser();
-//                                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                                 startActivity(intent);
                             } else {
                                 // If sign in fails, display a message to the user.
                                 Log.w(TAG, "signInWithEmail:failure", task.getException());
-//                                Toast.makeText(EmailPasswordActivity.this, "Authentication failed.",
-//                                        Toast.LENGTH_SHORT).show();
-                                mAuthTask = null;
-                                showProgress(false);
                                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                                 mPasswordView.requestFocus();
                             }
-
-                            // ...
                         }
                     });
-
-//            try {
-//                // Simulate network access.
-//                Thread.sleep(2000);
-//            } catch (InterruptedException e) {
-//                return false;
-//            }
-//
-//            for (String credential : DUMMY_CREDENTIALS) {
-//                String[] pieces = credential.split(":");
-//                if (pieces[0].equals(mEmail)) {
-//                    // Account exists, return true if the password matches.
-//                    return pieces[1].equals(mPassword);
-//                }
-//            }
-
-            // TODO: register the new account here.
-//            return false;
-            return;
-        }
-
-        @Override
-        protected Void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                startActivity(intent);
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
+            return null;
         }
 
         @Override
