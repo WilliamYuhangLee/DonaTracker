@@ -5,30 +5,46 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 import edu.gatech.donatracker.R;
+import edu.gatech.donatracker.model.Model;
+import edu.gatech.donatracker.model.user.User;
 
 public class HomeActivity extends AppCompatActivity {
 
+    // UI references
+    private Button log_out_button;
+    private TextView greeting_textView;
+
+    // User credentials
+    private FirebaseAuth mAuth;
+    private User user;
+
     // Exit application when click BACK button
     boolean isBackButtonClicked = false;
-    private Button logOutButton;
-    private FirebaseAuth mAuth;
+
+    // DEBUG
+    private final String TAG = "HomeActivity.class";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
         mAuth = FirebaseAuth.getInstance();
+        user = Model.getModel().getUser(mAuth.getUid());
 
         // Initialize references
-        logOutButton = (Button) findViewById(R.id.button_home_logout);
+        log_out_button = findViewById(R.id.button_home_logout);
+        greeting_textView = findViewById(R.id.textView_home_greeting);
+        greeting_textView.append(", " + user.getUserType() + "!");
 
         // Set handlers
-        logOutButton.setOnClickListener(new View.OnClickListener() {
+        log_out_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mAuth.signOut();

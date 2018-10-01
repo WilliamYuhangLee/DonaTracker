@@ -6,6 +6,8 @@
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Login</string>
     <string name="action_sign_in_short">Sign in</string>
+
+    <!-- Strings related to registration -->
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
@@ -17,4 +19,9 @@
     <string name="registration_password">PASSWORD</string>
     <string name="cancel">Cancel</string>
     <string name="log_out">Log out</string>
+    <string name="account_type">ACCOUNT TYPE</string>
+    <string name="signup">Sign Up</string>
+
+    <!-- Strings related to home page -->
+    <string name="welcome">Welcome</string>
 </resources>

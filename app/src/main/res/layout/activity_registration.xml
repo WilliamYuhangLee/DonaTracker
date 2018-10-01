@@ -8,15 +8,14 @@
 
     <EditText
         android:id="@+id/editText_registration_email"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="52dp"
         android:ems="10"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.653"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,26 +24,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="64dp"
         android:text="@string/registration_email"
         app:layout_constraintEnd_toStartOf="@+id/editText_registration_email"
-        app:layout_constraintHorizontal_bias="0.692"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/editText_registration_password"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:ems="10"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.653"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/editText_registration_email"
         app:layout_constraintTop_toBottomOf="@+id/editText_registration_email" />
 
     <TextView
@@ -60,24 +55,47 @@
         android:id="@+id/button_registration_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="8dp"
         android:onClick="onClickCancel"
-        android:text="Cancel"
+        android:text="@string/cancel"
+        app:layout_constraintEnd_toStartOf="@+id/button_registration_signup"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_registration_password" />
+        app:layout_constraintTop_toTopOf="@+id/button_registration_signup" />
 
     <Button
         android:id="@+id/button_registration_signup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="44dp"
-        android:text="signup"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="68dp"
         android:onClick="onClickRegister"
+        android:text="@string/signup"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.522"
+        app:layout_constraintHorizontal_bias="0.302"
         app:layout_constraintStart_toEndOf="@+id/button_registration_cancel"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_registration_account_type" />
+
+    <TextView
+        android:id="@+id/textview_registration_account_type"
+        android:layout_width="102dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="52dp"
+        android:text="@string/account_type"
+        app:layout_constraintEnd_toEndOf="@+id/textview_registration_password"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview_registration_password" />
+
+    <Spinner
+        android:id="@+id/spinner_registration_account_type"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="36dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/editText_registration_password"
         app:layout_constraintTop_toBottomOf="@+id/editText_registration_password" />
 </android.support.constraint.ConstraintLayout>
