@@ -96,11 +96,40 @@ public class Model {
     }
 
     /**
+     * Take a List of Locations and check if any of them are in the locations already.
+     * If there are any duplicates, nothing changes and returns false;
+     * Else all the locations are added and true is returned.
+     *
+     * @param locations to be added
+     * @return true if addition is successful, else false
+     */
+    public boolean addLocations(List<Location> locations) {
+        boolean success = true;
+        List<Location> temp = getLocations();
+        for (Location location : locations) {
+            success = success && (!temp.contains(location) && temp.add(location));
+        }
+        if (success) {
+            this.locations = temp;
+        }
+        return success;
+    }
+
+    /**
      * Remove a location from the users list.
      * @param location to be removed
      * @return true if removed, false if there is no such location
      */
     public boolean removeLocation(Location location) {
         return locations.contains(location) && locations.remove(location);
+    }
+
+    /**
+     * Get a COPY of the List locations.
+     *
+     * @return a COPY of the List locations
+     */
+    public List<Location> getLocations() {
+        return new ArrayList<>(locations);
     }
 }

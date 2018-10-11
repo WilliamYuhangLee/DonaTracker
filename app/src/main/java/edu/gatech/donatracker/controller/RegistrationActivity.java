@@ -55,37 +55,34 @@ public class RegistrationActivity extends AppCompatActivity {
         user = new User((User.UserType) mAccountTypeSpinner.getSelectedItem());
 
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
 
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success");
-                            FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "createUserWithEmail:success");
+                        FirebaseUser firebaseUser = mAuth.getCurrentUser();
 
-                            // Retrieve user's UID
-                            String UID = null;
-                            try {
-                                UID = firebaseUser.getUid();
-                            } catch(NullPointerException e) {
-                                Log.e(TAG, "Unable to retrieve UID", e);
-                            }
-
-                            // Add new User to Model
-                            user.setUID(UID);
-                            Model.getModel().addUser(user, UID);
-
-                            // Go to the HomeActivity and clear task
-                            // TODO: find a way to pass in the user type/permissions to customize home layout
-                            Intent intent = new Intent(RegistrationActivity.this, HomeActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                        // Retrieve user's UID
+                        String UID = null;
+                        try {
+                            UID = firebaseUser.getUid();
+                        } catch(NullPointerException e) {
+                            Log.e(TAG, "Unable to retrieve UID", e);
                         }
+
+                        // Add new User to Model
+                        user.setUID(UID);
+                        Model.getModel().addUser(user, UID);
+
+                        // Go to the HomeActivity and clear task
+                        // TODO: find a way to pass in the user type/permissions to customize home layout
+                        Intent intent = new Intent(RegistrationActivity.this, HomeActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "createUserWithEmail:failure", task.getException());
                     }
                 });
     }

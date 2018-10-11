@@ -44,15 +44,12 @@ public class HomeActivity extends AppCompatActivity {
         greeting_textView.append(", " + user.getUserType() + "!");
 
         // Set handlers
-        log_out_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAuth.signOut();
-                Intent intent = new Intent(HomeActivity.this, WelcomeActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish();
-            }
+        log_out_button.setOnClickListener(v -> {
+            mAuth.signOut();
+            Intent intent = new Intent(HomeActivity.this, WelcomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
     }
 
