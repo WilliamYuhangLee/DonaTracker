@@ -5,6 +5,11 @@ import java.util.List;
 
 import edu.gatech.donatracker.model.user.LocationEmployee;
 
+/**
+ * Created by Yuhang Li on 2018/09/28
+ *
+ * POJO for a location, holds information about this location.
+ */
 public class Location {
 
     // Instance variables

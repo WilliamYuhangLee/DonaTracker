@@ -9,8 +9,9 @@ import edu.gatech.donatracker.model.Location;
 /**
  * Created by Yuhang Li on 2018/10/11
  *
- * A factory class that has a static method parseLocations that returns a List of
- * Locations when passed in a List<String[]> that is created from the CSVFile class
+ * A factory class that has a static method parseLocations() that returns a List of
+ * Locations when passed in a List<String[]> that is returned from the CSVFile class's
+ * read() method.
  *
  */
 public class LocationFactory {
@@ -51,6 +52,14 @@ public class LocationFactory {
         }
     }
 
+    /**
+     * The only public method of this class.
+     * Take a List<String[]> that is generated from the CSVFile class's read()
+     * method, and return a List of Locations with the list's elements as parameters.
+     *
+     * @param rawList
+     * @return
+     */
     public static List<Location> parseLocations(List<String[]> rawList) {
         LocationFactory locationFactory = new LocationFactory(rawList);
         return locationFactory.locations;

@@ -15,7 +15,6 @@ import edu.gatech.donatracker.model.user.User;
  * controller.
  *
  */
-
 public class Model {
 
     // Singleton instance

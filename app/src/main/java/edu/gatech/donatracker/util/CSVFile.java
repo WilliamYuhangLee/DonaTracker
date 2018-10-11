@@ -7,16 +7,38 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Created by Yuhang Li on 2018/10/11
+ *
+ * A utility class that parses a CSV file into a list of its rows.
+ */
 public class CSVFile {
 
-    InputStream inputStream;
+    private InputStream inputStream;
 
+    /**
+     * Constructor.
+     *
+     * Refer to the following lines for usage of this class:
+     *
+     * InputStream inputStream = getResources().openRawResource(R.raw.CSV_FILE_NAME);
+     * CSVFile csvFile = new CSVFile(inputStream);
+     * List<String[]> list = csvFile.read();
+     *
+     * @param inputStream denotes the file to be parsed.
+     */
     public CSVFile(InputStream inputStream) {
         this.inputStream = inputStream;
     }
 
-    public List read() {
-        List result = new ArrayList();
+    /**
+     * Separate the CSV file into a List of rows, with each row being a String[]
+     * comprised of several String values (split by commas from the original file)
+     *
+     * @return a List<String[]> that contains rows of elements from a CSV file.
+     */
+    public List<String[]> read() {
+        List<String[]> result = new ArrayList<>();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         try {
             String csvLine;
