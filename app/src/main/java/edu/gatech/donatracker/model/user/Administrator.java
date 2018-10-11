@@ -4,7 +4,6 @@ public class Administrator extends User {
 
     // Constructors
     public Administrator() {
-        super();
-        userType = "Administrator";
+        super(UserType.ADMINISTRATOR);
     }
 }

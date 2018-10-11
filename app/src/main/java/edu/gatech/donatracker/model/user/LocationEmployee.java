@@ -4,7 +4,6 @@ public class LocationEmployee extends User {
 
     // Constructors
     public LocationEmployee() {
-        super();
-        userType = "Location Employee";
+        super(UserType.LOCATION_EMPLOYEE);
     }
 }

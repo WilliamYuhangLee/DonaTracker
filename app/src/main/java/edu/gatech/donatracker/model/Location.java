@@ -9,6 +9,16 @@ public class Location {
 
     // Instance variables
     private List<LocationEmployee> localEmployees;
+    private String name;
+    private String type;
+    private double longitude;
+    private double latitude;
+    private String address;
+    private String phone;
+    private String city;
+    private String state;
+    private int zip;
+    private String website;
 
     // Constructors
     public Location() {

@@ -44,21 +44,16 @@ public class RegistrationActivity extends AppCompatActivity {
         mAccountTypeSpinner = findViewById(R.id.spinner_registration_account_type);
 
         // Set up the adapter for the account type spinner
-        ArrayAdapter<String> spinner_adapter = new ArrayAdapter<>(this, android.R.layout
-                .simple_spinner_dropdown_item, User.getUserTypes());
+        ArrayAdapter<User.UserType> spinner_adapter = new ArrayAdapter<>(this, android.R.layout
+                .simple_spinner_dropdown_item, User.UserType.values());
         mAccountTypeSpinner.setAdapter(spinner_adapter);
     }
 
     public void onClickRegister(View view) {
         String password = ((EditText) findViewById(R.id.editText_registration_password)).getText().toString();
         String email = ((EditText) findViewById(R.id.editText_registration_email)).getText().toString();
+        user = new User((User.UserType) mAccountTypeSpinner.getSelectedItem());
 
-        try {
-            user = (User.getClassFromName((String) mAccountTypeSpinner.getSelectedItem())).newInstance();
-        } catch (Exception e) {
-            Log.e(TAG, "User instance creation failed.", e);
-            user = new User();
-        }
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
