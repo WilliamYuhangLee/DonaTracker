@@ -24,5 +24,17 @@
 
     <!-- Strings related to home page -->
     <string name="welcome">Welcome</string>
-    <string name="location">Location</string>
+    <string name="locations">Locations</string>
+
+    <!-- Strings related to Location views -->
+    <string name="website">Website:\u0020</string>
+    <string name="state">State:\u0020</string>
+    <string name="zip_code">Zip Code:\u0020</string>
+    <string name="location_type">Location Type:\u0020</string>
+    <string name="location_name">Location Name:\u0020</string>
+    <string name="longitude">Longitude:\u0020</string>
+    <string name="latitude">Latitude:\u0020</string>
+    <string name="address">Address:\u0020</string>
+    <string name="phone">Phone:\u0020</string>
+    <string name="city">City:\u0020</string>
 </resources>

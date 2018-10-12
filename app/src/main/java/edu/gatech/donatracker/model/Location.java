@@ -8,10 +8,17 @@ import java.util.List;
 
 import edu.gatech.donatracker.model.user.LocationEmployee;
 
+/**
+ * Created by Yuhang Li on 2018/09/28
+ *
+ * POJO for a location, holds information about this location.
+ */
 public class Location implements Parcelable {
 
-    // Instance variables
+    // Static fields
     private static int nextId = 0;
+
+    // Instance variables
     private int id;
     private List<LocationEmployee> localEmployees;
     private String name;

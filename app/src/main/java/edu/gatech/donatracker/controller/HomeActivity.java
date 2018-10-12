@@ -42,8 +42,8 @@ public class HomeActivity extends AppCompatActivity {
         // Initialize references
         log_out_button = findViewById(R.id.button_home_logout);
         greeting_textView = findViewById(R.id.textView_home_greeting);
-        view_location_list_button = findViewById(R.id.button_home_view_location);
         greeting_textView.append(", " + user.getUserType() + "!");
+        view_location_list_button = findViewById(R.id.button_home_view_location);
 
         // Set handlers
         log_out_button.setOnClickListener(v -> {

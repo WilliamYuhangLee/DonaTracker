@@ -21,13 +21,14 @@ public class Model {
     private static final Model instance = new Model();
     public static Model getModel() {return instance;}
 
-    private Location currentLocation;
-
     // Hold a Map of UIDs to users
     private Map<String, User> users;
 
     // Hold the list of all Locations
     private List<Location> locations;
+
+    // Hold current Location
+    private Location currentLocation;
 
     // Constructor
     private Model() {
@@ -49,6 +50,7 @@ public class Model {
 
     }
 
+    // Getters and Setters
     public void setCurrentLocation(Location in) {
         currentLocation = in;
     }

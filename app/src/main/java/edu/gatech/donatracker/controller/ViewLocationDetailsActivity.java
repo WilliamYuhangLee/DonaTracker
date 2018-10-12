@@ -9,9 +9,16 @@ import edu.gatech.donatracker.R;
 import edu.gatech.donatracker.model.Location;
 import edu.gatech.donatracker.model.Model;
 
+/**
+ * Created by Qiusen Huang on 2018/10/11
+ */
 public class ViewLocationDetailsActivity extends AppCompatActivity {
+
+    // Models
     private Model model;
     private Location currentLocation;
+
+    // UI References
     private TextView textViewName;
     private TextView textViewType;
     private TextView textViewLongitude;
@@ -22,14 +29,17 @@ public class ViewLocationDetailsActivity extends AppCompatActivity {
     private TextView textViewState;
     private TextView textViewZip;
     private TextView textViewWebsite;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_location_details);
 
+        // Initiate Models
         model = Model.getModel();
         currentLocation = model.getCurrentLocation();
 
+        // Initiate UI References
         textViewName = findViewById(R.id.location_name);
         textViewType = findViewById(R.id.location_type);
         textViewLongitude = findViewById(R.id.location_longitude);
@@ -41,20 +51,19 @@ public class ViewLocationDetailsActivity extends AppCompatActivity {
         textViewZip = findViewById(R.id.location_zip);
         textViewWebsite = findViewById(R.id.location_website);
 
+        // Fill text fields with current Location info
         if (currentLocation != null) {
-            textViewName.setText(currentLocation.getName().toString());
-            textViewType.setText(currentLocation.getType().toString());
-            textViewLongitude.setText(Double.toString(currentLocation.getLongitude()));
-            textViewLatitude.setText(Double.toString(currentLocation.getLatitude()));
-            textViewAddress.setText(currentLocation.getAddress().toString());
-            textViewPhone.setText(currentLocation.getPhone().toString());
-            textViewCity.setText(currentLocation.getCity().toString());
-            textViewState.setText(currentLocation.getState().toString());
-            textViewZip.setText(Integer.toString(currentLocation.getZip()));
-            textViewWebsite.setText(currentLocation.getWebsite().toString());
-
+            textViewName.append(currentLocation.getName());
+            textViewType.append(currentLocation.getType());
+            textViewLongitude.append(Double.toString(currentLocation.getLongitude()));
+            textViewLatitude.append(Double.toString(currentLocation.getLatitude()));
+            textViewAddress.append(currentLocation.getAddress());
+            textViewPhone.append(currentLocation.getPhone());
+            textViewCity.append(currentLocation.getCity());
+            textViewState.append(currentLocation.getState());
+            textViewZip.append(Integer.toString(currentLocation.getZip()));
+            textViewWebsite.append(currentLocation.getWebsite());
         }
-
-
+        //TODO: handle situation where loading location info fails
     }
 }

@@ -20,11 +20,16 @@ import edu.gatech.donatracker.model.Location;
 import edu.gatech.donatracker.util.CSVFile;
 import edu.gatech.donatracker.util.LocationFactory;
 
-
+/**
+ * Created by Qiusen Huang on 2018/10/11
+ */
 public class ViewLocationsActivity extends AppCompatActivity {
-    private List<Location> locationList;
+
+    // Models
     private Model model;
-    private SimpleLocationRecyclerViewAdapter adapter;
+    private List<Location> locationList;
+
+    // UI References
     private RecyclerView recyclerView;
 
     @Override
@@ -32,25 +37,26 @@ public class ViewLocationsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_locations);
 
-        //
-        Model model = Model.getModel();
+        // Initiate Models
+        model = Model.getModel();
 
+        // Initiate UI References
         recyclerView = findViewById(R.id.recycler_view_view_locations_locations);
 
-        //
+        // Read in Location info from CSV file
         InputStream inputStream = getResources().openRawResource(R.raw.location_data);
         CSVFile csvFile = new CSVFile(inputStream);
         locationList = LocationFactory.parseLocations(csvFile.read());
         model.addLocations(locationList);
+
+        // Set up adapters
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new SimpleLocationRecyclerViewAdapter(locationList);
+        SimpleLocationRecyclerViewAdapter adapter = new SimpleLocationRecyclerViewAdapter(locationList);
         recyclerView.setAdapter(adapter);
-
-
     }
 
-
-    public class SimpleLocationRecyclerViewAdapter
+    // RecyclerViewAdapter inner class
+    private class SimpleLocationRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleLocationRecyclerViewAdapter.ViewHolder> {
 
         /**
@@ -63,7 +69,7 @@ public class ViewLocationsActivity extends AppCompatActivity {
          *
          * @param items the list of items to be displayed in the recycler view
          */
-        public SimpleLocationRecyclerViewAdapter(List<Location> items) {
+        SimpleLocationRecyclerViewAdapter(List<Location> items) {
             myLocations = items;
         }
 
@@ -132,13 +138,13 @@ public class ViewLocationsActivity extends AppCompatActivity {
          * the list view (in this case the two TextView)
          */
 
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            public final View mView;
+        class ViewHolder extends RecyclerView.ViewHolder {
+            final View mView;
 //            public final TextView mIdView;
-            public final TextView mContentView;
-            public Location myLocation;
+            final TextView mContentView;
+            Location myLocation;
 
-            public ViewHolder(View view) {
+            ViewHolder(View view) {
                 super(view);
                 mView = view;
 //                mIdView = (TextView) view.findViewById(R.id.id);
