@@ -19,6 +19,7 @@ public class HomeActivity extends AppCompatActivity {
     // UI references
     private Button log_out_button;
     private TextView greeting_textView;
+    private Button view_location_list_button;
 
     // User credentials
     private FirebaseAuth mAuth;
@@ -41,6 +42,7 @@ public class HomeActivity extends AppCompatActivity {
         // Initialize references
         log_out_button = findViewById(R.id.button_home_logout);
         greeting_textView = findViewById(R.id.textView_home_greeting);
+        view_location_list_button = findViewById(R.id.button_home_view_location);
         greeting_textView.append(", " + user.getUserType() + "!");
 
         // Set handlers
@@ -50,6 +52,10 @@ public class HomeActivity extends AppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
+        });
+        view_location_list_button.setOnClickListener(view -> {
+            Intent intent = new Intent(HomeActivity.this, ViewLocationsActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -62,6 +68,7 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
         }
     }
+
 
     @Override
     protected void onResume() {
