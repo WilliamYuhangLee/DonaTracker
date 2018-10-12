@@ -24,4 +24,5 @@
 
     <!-- Strings related to home page -->
     <string name="welcome">Welcome</string>
+    <string name="location">Location</string>
 </resources>

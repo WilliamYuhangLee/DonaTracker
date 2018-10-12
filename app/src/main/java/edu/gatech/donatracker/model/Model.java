@@ -22,6 +22,8 @@ public class Model {
     private static final Model instance = new Model();
     public static Model getModel() {return instance;}
 
+    private Location currentLocation;
+
     // Hold a Map of UIDs to users
     private Map<String, User> users;
 
@@ -46,6 +48,14 @@ public class Model {
     // Populate the model with dummy locations. Delete when app finished
     private void loadDummyLocations() {
 
+    }
+
+    public void setCurrentLocation(Location in) {
+        currentLocation = in;
+    }
+
+    public Location getCurrentLocation() {
+        return currentLocation;
     }
 
     /**

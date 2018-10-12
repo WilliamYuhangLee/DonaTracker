@@ -16,8 +16,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".controller.LoginActivity"
-            android:label="Login">
-        </activity>
+            android:label="Login" />
         <activity
             android:name=".controller.RegistrationActivity"
             android:label="Registration"
@@ -36,6 +35,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".controller.ViewLocationsActivity" />
+        <activity android:name=".controller.ViewLocationDetailsActivity"></activity>
     </application>
 
 </manifest>
