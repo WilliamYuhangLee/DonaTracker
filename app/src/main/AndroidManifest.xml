@@ -37,7 +37,7 @@
         </activity>
         <activity
             android:name=".controller.ViewLocationsActivity"
-            android:label="Location List"
+            android:label="List of Locations"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".controller.ViewLocationDetailsActivity"

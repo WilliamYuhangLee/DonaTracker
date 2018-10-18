@@ -21,6 +21,7 @@ public class Location implements Parcelable {
     // Instance variables
     private int id;
     private List<LocationEmployee> localEmployees;
+    private List<Donation> inventory;
     private String name;
     private String type;
     private double longitude;
@@ -33,21 +34,45 @@ public class Location implements Parcelable {
     private String website;
 
     // Constructors
+
     public Location() {
         localEmployees = new ArrayList<>();
+        inventory = new ArrayList<>();
         id = nextId++;
     }
 
-    public void addEmployee(LocationEmployee employee) {
-        localEmployees.add(employee);
+    // Data Management
+
+    public boolean addEmployee(LocationEmployee employee) {
+        return localEmployees.add(employee);
     }
 
-    public void removeEmployee(LocationEmployee employee) {
-        localEmployees.remove(employee);
+    public boolean addEmployees(List employees) {
+        return localEmployees.addAll(employees);
+    }
+
+    public boolean removeEmployee(LocationEmployee employee) {
+        return localEmployees.remove(employee);
     }
 
     public List<LocationEmployee> viewEmployees() {
         return new ArrayList<>(localEmployees);
+    }
+
+    public boolean addDonation(Donation donation) {
+        return inventory.add(donation);
+    }
+
+    public boolean addDonations(List donations) {
+        return inventory.addAll(donations);
+    }
+
+    public boolean removeDonation(Donation donation) {
+        return inventory.remove(donation);
+    }
+
+    public List<Donation> viewInventory() {
+        return new ArrayList<>(inventory);
     }
 
     //Getters and Setters
