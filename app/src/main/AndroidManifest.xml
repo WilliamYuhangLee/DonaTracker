@@ -43,6 +43,12 @@
             android:name=".controller.ViewLocationDetailsActivity"
             android:label="Location Detail"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name=".controller.ViewDonationActivity"
+            android:label="List of Donations" />
+        <activity android:name=".controller.ViewDonationDetailsActivity" />
+        <activity android:name=".controller.EditDonationDetailActivity"
+            android:label="Edit/Add Donation Detail"></activity>
     </application>
 
 </manifest>

@@ -1,13 +1,18 @@
 package edu.gatech.donatracker.controller;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Display;
+import android.view.View;
 import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import edu.gatech.donatracker.R;
 import edu.gatech.donatracker.model.Location;
 import edu.gatech.donatracker.model.Model;
+import edu.gatech.donatracker.model.user.User;
 
 /**
  * Created by Qiusen Huang on 2018/10/11
@@ -17,6 +22,8 @@ public class ViewLocationDetailsActivity extends AppCompatActivity {
     // Models
     private Model model;
     private Location currentLocation;
+    private FirebaseAuth auth;
+    private User currentUser;
 
     // UI References
     private TextView textViewName;
@@ -38,6 +45,8 @@ public class ViewLocationDetailsActivity extends AppCompatActivity {
         // Initiate Models
         model = Model.getModel();
         currentLocation = model.getCurrentLocation();
+        auth = FirebaseAuth.getInstance();
+        currentUser = model.getUser(auth.getCurrentUser().getUid());
 
         // Initiate UI References
         textViewName = findViewById(R.id.location_name);
@@ -66,4 +75,15 @@ public class ViewLocationDetailsActivity extends AppCompatActivity {
         }
         //TODO: handle situation where loading location info fails
     }
+
+    public void onClickViewDonation(View view) {
+        if (currentUser.getUserType() == User.UserType.LOCATION_EMPLOYEE) {
+            Intent intent = new Intent(ViewLocationDetailsActivity.this, ViewDonationActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        } else {
+            //TODO add error if not authorized
+        }
+    }
+
 }

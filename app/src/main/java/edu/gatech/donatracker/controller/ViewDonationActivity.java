@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.InputStream;
@@ -17,6 +19,7 @@ import java.util.List;
 import edu.gatech.donatracker.R;
 import edu.gatech.donatracker.model.Donation;
 import edu.gatech.donatracker.model.Model;
+import edu.gatech.donatracker.model.user.User;
 import edu.gatech.donatracker.util.CSVFile;
 import edu.gatech.donatracker.util.LocationFactory;
 
@@ -31,7 +34,7 @@ public class ViewDonationActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_donations);
+        setContentView(R.layout.activity_view_donation);
 
         // Initiate Models
         model = Model.getModel();
@@ -39,10 +42,28 @@ public class ViewDonationActivity extends AppCompatActivity{
         // Initiate UI References
         recyclerView = findViewById(R.id.recycler_view_view_donations_donations);
 
+        donationList = model.getCurrentLocation().viewInventory();
+
+
+        Donation donation1 = new Donation(model.getCurrentLocation());
+        donation1.setComments("commenttest");
+        donation1.setValueInUSD(123.2);
+        donation1.setFullDescription("full description");
+        donation1.setShortDescription("short description");
+        donationList.add(donation1);
+
         // Set up adapters
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        ViewDonationActivity.SimpleDonationRecyclerViewAdapter adapter = new ViewDonationActivity.SimpleDonationRecyclerViewAdapter(DonationList);
+        ViewDonationActivity.SimpleDonationRecyclerViewAdapter adapter =
+                new ViewDonationActivity.SimpleDonationRecyclerViewAdapter(donationList);
         recyclerView.setAdapter(adapter);
+    }
+
+    public void onClickAddDonation(View view) {
+        Intent intent = new Intent(ViewDonationActivity.this, EditDonationDetailActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        model.setCurrentDonation(null);
+        startActivity(intent);
     }
 
     // RecyclerViewAdapter inner class
@@ -64,7 +85,8 @@ public class ViewDonationActivity extends AppCompatActivity{
         }
 
         @Override
-        public ViewDonationActivity.SimpleDonationRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup paren          t, int viewType) {
+        public ViewDonationActivity.SimpleDonationRecyclerViewAdapter
+                .ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             /*
 
               This sets up the view for each individual item in the recycler display
@@ -72,12 +94,13 @@ public class ViewDonationActivity extends AppCompatActivity{
               If you look at the example file, you will see it currently just 2 TextView elements
              */
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.Donation_list_content, parent, false);
+                    .inflate(R.layout.donation_list_content, parent, false);
             return new ViewDonationActivity.SimpleDonationRecyclerViewAdapter.ViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(final ViewDonationActivity.SimpleDonationRecyclerViewAdapter.ViewHolder holder, int position) {
+        public void onBindViewHolder(final ViewDonationActivity.SimpleDonationRecyclerViewAdapter
+                .ViewHolder holder, int position) {
 
             final Model model = Model.getModel();
             /*
@@ -108,6 +131,7 @@ public class ViewDonationActivity extends AppCompatActivity{
                          */
                     //intent.putExtra("DonationPassed", holder.myDonation.getId());
 
+                    //TODO use a parsel to pass
                     model.setCurrentDonation(holder.myDonation);
 
                     //now just display the new window
