@@ -43,19 +43,6 @@ public class ViewDonationDetailsActivity extends AppCompatActivity {
         textViewComments = findViewById(R.id.comments);
         //TODO not a text view, find how to inset image
         //textViewPicture = findViewById(R.id.picture);
-
-//        // Fill text fields with current Location info
-//        if (currentDonation != null) {
-//            Log.d("Debug", "The current donation being showed: " + currentDonation.toString());
-//            textViewDonationTime.append(currentDonation.getDonationTime().toString());
-//            textViewDonationLocation.append(currentDonation.getDonationLocation().toString());
-//            textViewFullDescription.append(currentDonation.getFullDescription());
-//            textViewValueInUSD.append(Double.toString(currentDonation.getValueInUSD()));
-//            textViewComments.append(currentDonation.getComments());
-//            //TODO implement picture later on
-////            textViewPicture.append(currentDonation.get());
-//        }
-        //TODO: handle situation where loading location info fails
     }
 
     @Override
@@ -64,14 +51,16 @@ public class ViewDonationDetailsActivity extends AppCompatActivity {
         // Fill text fields with current Location info
         if (currentDonation != null) {
             Log.d("Debug", "The current donation being showed: " + currentDonation.toString());
-            textViewDonationTime.append(currentDonation.getDonationTime().toString());
-            textViewDonationLocation.append(currentDonation.getDonationLocation().toString());
-            textViewFullDescription.append(currentDonation.getFullDescription());
-            textViewValueInUSD.append(Double.toString(currentDonation.getValueInUSD()));
-            textViewComments.append(currentDonation.getComments());
+            //TODO don't do string append
+            textViewDonationTime.setText("Donation Time: " + currentDonation.getDonationTime().toString());
+            textViewDonationLocation.setText("Donation Location: " + currentDonation.getDonationLocation().toString());
+            textViewFullDescription.setText("Full Description: " + currentDonation.getFullDescription());
+            textViewValueInUSD.setText("Value in USD: " + Double.toString(currentDonation.getValueInUSD()));
+            textViewComments.setText("Comments: "+ currentDonation.getComments());
             //TODO implement picture later on
 //            textViewPicture.append(currentDonation.get());
         }
+        //TODO: handle situation where loading location info fails
     }
     public void onClickEditDonation(View view) {
         Context context = view.getContext();

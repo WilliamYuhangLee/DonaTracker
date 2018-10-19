@@ -61,7 +61,7 @@ public class ViewDonationActivity extends AppCompatActivity{
 
     public void onClickAddDonation(View view) {
         Intent intent = new Intent(ViewDonationActivity.this, EditDonationDetailActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         model.setCurrentDonation(null);
         startActivity(intent);
     }
