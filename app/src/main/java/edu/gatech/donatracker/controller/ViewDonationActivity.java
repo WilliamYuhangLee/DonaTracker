@@ -113,7 +113,7 @@ public class ViewDonationActivity extends AppCompatActivity{
               Now we bind the data to the widgets.  In this case, pretty simple, put the id in one
               textview and the string rep of a course in the other.
              */
-            holder.mContentView.setText(myDonations.get(position).toString());
+            holder.mContentView.setText(myDonations.get(position).getShortDescription());
 
             /*
              * set up a listener to handle if the user clicks on this list item, what should happen?

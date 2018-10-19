@@ -12,7 +12,7 @@
         android:layout_height="20dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Donation Time"
+        android:text="Donation Time: "
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/donation_location" />
 
@@ -22,7 +22,7 @@
         android:layout_height="17dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Donation Location"
+        android:text="Donation Location: "
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/full_description" />
 
@@ -32,7 +32,7 @@
         android:layout_height="17dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Full Description"
+        android:text="Full Description: "
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/value_in_USD" />
 
@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Value in USD"
+        android:text="Value in USD: "
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/comments" />
 
@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Comments"
+        android:text="Comments: "
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -64,7 +64,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="44dp"
         android:onClick="onClickEditDonation"
-        android:text="Edit Donation"
+        android:text="Edit Donation: "
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

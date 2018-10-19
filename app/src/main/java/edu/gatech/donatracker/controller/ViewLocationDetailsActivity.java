@@ -79,7 +79,7 @@ public class ViewLocationDetailsActivity extends AppCompatActivity {
     public void onClickViewDonation(View view) {
         if (currentUser.getUserType() == User.UserType.LOCATION_EMPLOYEE) {
             Intent intent = new Intent(ViewLocationDetailsActivity.this, ViewDonationActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         } else {
             //TODO add error if not authorized

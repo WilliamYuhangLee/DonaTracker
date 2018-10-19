@@ -1,8 +1,10 @@
 package edu.gatech.donatracker.controller;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -27,7 +29,7 @@ public class ViewDonationDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_location_details);
+        setContentView(R.layout.activity_view_donation_details);
 
         // Initiate Models
         model = Model.getModel();
@@ -42,8 +44,26 @@ public class ViewDonationDetailsActivity extends AppCompatActivity {
         //TODO not a text view, find how to inset image
         //textViewPicture = findViewById(R.id.picture);
 
+//        // Fill text fields with current Location info
+//        if (currentDonation != null) {
+//            Log.d("Debug", "The current donation being showed: " + currentDonation.toString());
+//            textViewDonationTime.append(currentDonation.getDonationTime().toString());
+//            textViewDonationLocation.append(currentDonation.getDonationLocation().toString());
+//            textViewFullDescription.append(currentDonation.getFullDescription());
+//            textViewValueInUSD.append(Double.toString(currentDonation.getValueInUSD()));
+//            textViewComments.append(currentDonation.getComments());
+//            //TODO implement picture later on
+////            textViewPicture.append(currentDonation.get());
+//        }
+        //TODO: handle situation where loading location info fails
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         // Fill text fields with current Location info
         if (currentDonation != null) {
+            Log.d("Debug", "The current donation being showed: " + currentDonation.toString());
             textViewDonationTime.append(currentDonation.getDonationTime().toString());
             textViewDonationLocation.append(currentDonation.getDonationLocation().toString());
             textViewFullDescription.append(currentDonation.getFullDescription());
@@ -52,11 +72,11 @@ public class ViewDonationDetailsActivity extends AppCompatActivity {
             //TODO implement picture later on
 //            textViewPicture.append(currentDonation.get());
         }
-        //TODO: handle situation where loading location info fails
     }
     public void onClickEditDonation(View view) {
-        Intent intent = new Intent(ViewDonationDetailsActivity.this, EditDonationDetailActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+        Context context = view.getContext();
+        Intent intent = new Intent(context, EditDonationDetailActivity.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 }

@@ -78,4 +78,14 @@ public class Donation {
     public void setPicture(Bitmap picture) {
         this.picture = picture;
     }
+
+    @Override
+    public String toString() {
+        return "\nDonation: \nShort Description: " + getShortDescription() +
+                "\nFull Description: " + getFullDescription() +
+                "\nDonation location: " + getDonationLocation() +
+                "\nDonation Value: $" + getValueInUSD() +
+                "\nComment: " + getComments() +
+                "\nDonation Time: " + getDonationTime().toString();
+    }
 }
