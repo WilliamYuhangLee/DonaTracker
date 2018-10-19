@@ -9,12 +9,11 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import edu.gatech.donatracker.R;
 import edu.gatech.donatracker.model.Model;
@@ -24,6 +23,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private final String TAG = "RegistrationActivity.class";
     private FirebaseAuth mAuth;
+    private FirebaseFirestore database = FirebaseFirestore.getInstance();
     private User user;
 
     // UI references
@@ -52,7 +52,6 @@ public class RegistrationActivity extends AppCompatActivity {
     public void onClickRegister(View view) {
         String password = ((EditText) findViewById(R.id.editText_registration_password)).getText().toString();
         String email = ((EditText) findViewById(R.id.editText_registration_email)).getText().toString();
-        user = new User((User.UserType) mAccountTypeSpinner.getSelectedItem());
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
@@ -60,19 +59,18 @@ public class RegistrationActivity extends AppCompatActivity {
 
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "createUserWithEmail:success");
-                        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                        @NonNull FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                        String UID = firebaseUser.getUid();
 
-                        // Retrieve user's UID
-                        String UID = null;
-                        try {
-                            UID = firebaseUser.getUid();
-                        } catch(NullPointerException e) {
-                            Log.e(TAG, "Unable to retrieve UID", e);
-                        }
-
-                        // Add new User to Model
-                        user.setUID(UID);
-                        Model.getModel().addUser(user, UID);
+                        // Create new User and save it to Model/Firebase
+                        user = new User(UID, (User.UserType) mAccountTypeSpinner.getSelectedItem());
+//                        Model.getModel().addUser(user, UID);
+                        database.collection("users").document(UID).set(user.wrapData())
+                        .addOnSuccessListener((v) -> {
+                            Log.d(TAG, "User has been created and stored!");
+                        }).addOnFailureListener((v) -> {
+                            Log.d(TAG, "User creation failed!");
+                        });
 
                         // Go to the HomeActivity and clear task
                         // TODO: find a way to pass in the user type/permissions to customize home layout
@@ -83,6 +81,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                        Toast.makeText(RegistrationActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

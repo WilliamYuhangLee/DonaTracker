@@ -23,7 +23,6 @@
     <string name="signup">Sign Up</string>
 
     <!-- Strings related to home page -->
-    <string name="welcome">Welcome</string>
     <string name="locations">Locations</string>
 
     <!-- Strings related to Location views -->

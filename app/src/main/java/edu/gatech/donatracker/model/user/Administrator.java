@@ -3,7 +3,7 @@ package edu.gatech.donatracker.model.user;
 public class Administrator extends User {
 
     // Constructors
-    public Administrator() {
-        super(UserType.ADMINISTRATOR);
+    public Administrator(String UID) {
+        super(UID, UserType.ADMINISTRATOR);
     }
 }
