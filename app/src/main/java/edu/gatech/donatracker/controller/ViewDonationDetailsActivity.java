@@ -45,7 +45,7 @@ public class ViewDonationDetailsActivity extends AppCompatActivity {
         // Fill text fields with current Location info
         if (currentDonation != null) {
             textViewDonationTime.append(currentDonation.getDonationTime().toString());
-            textViewDonationLocation.append(currentDonation.getDonationLocation().toString());
+            textViewDonationLocation.append(Integer.toString(currentDonation.getDonationLocation()));
             textViewFullDescription.append(currentDonation.getFullDescription());
             textViewValueInUSD.append(Double.toString(currentDonation.getValueInUSD()));
             textViewComments.append(currentDonation.getComments());

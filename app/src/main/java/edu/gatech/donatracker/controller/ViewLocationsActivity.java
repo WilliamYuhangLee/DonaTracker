@@ -18,7 +18,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.io.InputStream;
@@ -26,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.gatech.donatracker.R;
-import edu.gatech.donatracker.model.Model;
 import edu.gatech.donatracker.model.Location;
 import edu.gatech.donatracker.model.user.User;
 import edu.gatech.donatracker.util.CSVFile;
@@ -73,8 +71,8 @@ public class ViewLocationsActivity extends AppCompatActivity {
             // Read in Location info from CSV file
             InputStream inputStream = getResources().openRawResource(R.raw.location_data);
             CSVFile csvFile = new CSVFile(inputStream);
-            locationList = LocationFactory.parseLocations(csvFile.read());
-            uploadLocations(locationList);
+            List<Location> parsedLocations = LocationFactory.parseLocations(csvFile.read());
+            uploadLocations(parsedLocations);
         });
 
         add_location_button.setOnClickListener(view -> {
@@ -106,18 +104,18 @@ public class ViewLocationsActivity extends AppCompatActivity {
                         break;
                     case MODIFIED:
                         Log.d(TAG, "Location modified!");
-                        String ID = (String) change.getDocument().getData().get("id");
-                        Location updated = locationList.stream().filter(location -> location.getId().equals
-                                (ID)).findFirst().get();
+                        int key = ((Long) change.getDocument().getData().get("key")).intValue();
+                        Location updated = locationList.stream().filter(location -> location.getKey() == key).findFirst
+                                ().get();
                         locationList.remove(updated);
                         locationList.add(change.getDocument().toObject(Location.class));
                         recyclerViewAdapter.notifyDataSetChanged();
                         break;
                     case REMOVED:
                         Log.d(TAG, "Location removed!");
-                        ID = (String) change.getDocument().getData().get("id");
-                        Location removed = locationList.stream().filter(location -> location.getId().equals
-                                (ID)).findFirst().get();
+                        key = ((Long) change.getDocument().getData().get("key")).intValue();
+                        Location removed = locationList.stream().filter(location -> location.getKey() == key).findFirst
+                                ().get();
                         locationList.remove(removed);
                         recyclerViewAdapter.notifyDataSetChanged();
                         break;
@@ -130,7 +128,7 @@ public class ViewLocationsActivity extends AppCompatActivity {
     private void uploadLocations(List<Location> locations) {
         WriteBatch batch = database.batch();
         for (Location location : locations) {
-            DocumentReference docRef = database.collection("locations").document(location.getId());
+            DocumentReference docRef = database.collection("locations").document(Integer.toString(location.getKey()));
             batch.set(docRef, location.wrapData());
         }
         batch.commit().addOnSuccessListener(v -> {
@@ -138,6 +136,7 @@ public class ViewLocationsActivity extends AppCompatActivity {
         }).addOnFailureListener(e -> {
             Log.e(TAG, "Locations upload failed!", e);
         });
+        recyclerViewAdapter.notifyDataSetChanged();
     }
 
     // RecyclerViewAdapter inner class

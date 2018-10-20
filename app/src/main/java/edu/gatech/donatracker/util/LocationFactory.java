@@ -1,6 +1,7 @@
 package edu.gatech.donatracker.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -38,6 +39,7 @@ public class LocationFactory {
     private void manufactureLocations() {
         for (String[] args : rawList.subList(1, rawList.size())) {
             Location location = new Location();
+            location.setKey(Integer.parseInt(args[indices.get("Key")]));
             location.setName(args[indices.get("Name")]);
             location.setLatitude(Double.parseDouble(args[indices.get("Latitude")]));
             location.setLongitude(Double.parseDouble(args[indices.get("Longitude")]));
@@ -57,8 +59,8 @@ public class LocationFactory {
      * Take a List<String[]> that is generated from the CSVFile class's read()
      * method, and return a List of Locations with the list's elements as parameters.
      *
-     * @param rawList
-     * @return
+     * @param rawList a List of String[] generated from a CSF file through the CSVFile class
+     * @return a List of Locations
      */
     public static List<Location> parseLocations(List<String[]> rawList) {
         LocationFactory locationFactory = new LocationFactory(rawList);

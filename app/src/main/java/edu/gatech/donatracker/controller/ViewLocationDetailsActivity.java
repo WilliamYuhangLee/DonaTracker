@@ -99,7 +99,7 @@ public class ViewLocationDetailsActivity extends AppCompatActivity {
     }
 
     public void onClickViewDonation(View view) {
-        if (user.getUserType() == User.UserType.LOCATION_EMPLOYEE) {
+        if (user.getUserType() == User.UserType.LOCATION_EMPLOYEE || user.getUserType() == User.UserType.MANAGER) {
             Intent intent = new Intent(ViewLocationDetailsActivity.this, ViewDonationActivity.class);
             intent.putExtra("User Model", (Parcelable) user);
             intent.putExtra("Current Location", currentLocation);

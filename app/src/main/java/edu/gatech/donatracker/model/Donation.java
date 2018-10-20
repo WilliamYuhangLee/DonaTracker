@@ -1,11 +1,7 @@
 package edu.gatech.donatracker.model;
 
-import android.graphics.Bitmap;
-
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,7 +38,7 @@ public class Donation {
     // Instance variables
     private String uuid;
     private Date donationTime;
-    private String donationLocation;
+    private int donationLocation;
     private String shortDescription;
     private String fullDescription;
     private double valueInUSD;
@@ -54,7 +50,7 @@ public class Donation {
     public Donation() {
     }
 
-    public Donation(String location) {
+    public Donation(int location) {
         uuid = UUID.randomUUID().toString();
         donationTime = Calendar.getInstance().getTime();
         donationLocation = location;
@@ -66,7 +62,7 @@ public class Donation {
         return donationTime;
     }
 
-    public String getDonationLocation() {
+    public int getDonationLocation() {
         return donationLocation;
     }
 

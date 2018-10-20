@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -42,8 +43,12 @@ public class CSVFile {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         try {
             String csvLine;
+            if ((csvLine = bufferedReader.readLine()) != null) {
+                String row[] = csvLine.replace("\uFEFF", "").trim().split(",");
+                result.add(row);
+            }
             while ((csvLine = bufferedReader.readLine()) != null) {
-                String[] row = csvLine.split(",");
+                String[] row = csvLine.trim().split(",");
                 result.add(row);
             }
         } catch (IOException e) {

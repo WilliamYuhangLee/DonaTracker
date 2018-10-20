@@ -51,7 +51,7 @@ public class ViewDonationActivity extends AppCompatActivity{
         user = getIntent().getParcelableExtra("User Model");
         donationList = new ArrayList<>();
         CollectionReference donationsRef = FirebaseFirestore.getInstance().collection("locations")
-                .document(currentLocation.getId()).collection("inventory");
+                .document(Integer.toString(currentLocation.getKey())).collection("inventory");
         donationsRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
@@ -140,7 +140,7 @@ public class ViewDonationActivity extends AppCompatActivity{
                             pass along the id of the course so we can retrieve the correct data in
                             the next window
                          */
-                    //intent.putExtra("DonationPassed", holder.myDonation.getId());
+                    //intent.putExtra("DonationPassed", holder.myDonation.getKey());
 
                     //TODO use a parsel to pass
                     model.setCurrentDonation(holder.myDonation);

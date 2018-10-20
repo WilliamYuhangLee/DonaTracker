@@ -99,7 +99,7 @@ public class HomeActivity extends AppCompatActivity {
             finish();
         }
         userDocRef.addSnapshotListener(this, (documentSnapshot, e) -> {
-            if (documentSnapshot.exists()) {
+            if (documentSnapshot != null && documentSnapshot.exists()) {
                 user = User.unwrapData(documentSnapshot.getData());
             } else if (e != null) {
                 Log.e(TAG, "User profile changed but update failed!", e);

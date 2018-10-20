@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by Yuhang Li on 2018/09/28
@@ -15,11 +14,8 @@ import java.util.UUID;
  */
 public class Location implements Parcelable {
 
-    // Static fields
-    private static int nextId = 0;
-
     // Instance variables
-    private String id;
+    private int key;
     private String name;
     private String type;
     private List<String> employees;
@@ -36,13 +32,12 @@ public class Location implements Parcelable {
     // Constructors
 
     public Location() {
-        id = UUID.randomUUID().toString();
         employees = new ArrayList<>();
         inventory = new ArrayList<>();
     }
 
     private Location (Parcel in) {
-        id = in.readString();
+        key = in.readInt();
         name = in.readString();
         type = in.readString();
         employees = new ArrayList<>();
@@ -59,9 +54,9 @@ public class Location implements Parcelable {
         website = in.readString();
     }
 
-    private Location(String id, String name, String type, List<String> employees, List<String> inventory,
+    private Location(int key, String name, String type, List<String> employees, List<String> inventory,
                      double longitude, double latitude, String address, String phone, String city, String state, int zip, String website) {
-        this.id = id;
+        this.key = key;
         this.name = name;
         this.type = type;
         this.employees = employees;
@@ -80,7 +75,7 @@ public class Location implements Parcelable {
 
     public HashMap<String, Object> wrapData() {
         HashMap<String, Object> data = new HashMap<>();
-        data.put("id", id);
+        data.put("key", key);
         data.put("name", name);
         data.put("type", type);
         data.put("employees", employees);
@@ -97,7 +92,7 @@ public class Location implements Parcelable {
     }
 
     public static Location unwrapData(HashMap<String, Object> data) {
-        return new Location((String) data.get("id"), (String) data.get("name"), (String) data.get("type"),
+        return new Location((int) data.get("key"), (String) data.get("name"), (String) data.get("type"),
                 (List<String>) data
                 .get("employees"), (List<String>) data.get
                 ("inventory"), (double) data.get("longitude"), (double) data.get("latitude"), (String) data.get
@@ -141,6 +136,15 @@ public class Location implements Parcelable {
     }
 
     //Getters and Setters
+
+
+    public void setKey(int key) {
+        this.key = key;
+    }
+
+    public int getKey() {
+        return key;
+    }
 
     public String getName() {
         return name;
@@ -238,10 +242,6 @@ public class Location implements Parcelable {
         this.website = website;
     }
 
-    public String getId() {
-        return this.id;
-    }
-
     @Override
     public String toString() {
         return this.getName();
@@ -254,7 +254,7 @@ public class Location implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
+        dest.writeInt(key);
         dest.writeString(name);
         dest.writeString(type);
         dest.writeList(employees);

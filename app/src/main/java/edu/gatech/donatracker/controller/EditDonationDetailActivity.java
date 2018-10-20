@@ -62,7 +62,7 @@ public class EditDonationDetailActivity extends AppCompatActivity {
             editTextComment.setText(currentDonation.getComments());
             editing = true;
         } else {
-            currentDonation = new Donation(model.getCurrentLocation().getId());
+            currentDonation = new Donation(model.getCurrentLocation().getKey());
             editing = false;
         }
     }
