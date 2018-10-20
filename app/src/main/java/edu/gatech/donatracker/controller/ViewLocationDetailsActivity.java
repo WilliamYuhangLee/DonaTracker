@@ -1,22 +1,37 @@
 package edu.gatech.donatracker.controller;
 
+import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import edu.gatech.donatracker.R;
 import edu.gatech.donatracker.model.Location;
 import edu.gatech.donatracker.model.Model;
+import edu.gatech.donatracker.model.user.User;
 
 /**
  * Created by Qiusen Huang on 2018/10/11
  */
 public class ViewLocationDetailsActivity extends AppCompatActivity {
 
+    public static final String TAG = "ViewLocationDetailsActivity.class";
     // Models
-    private Model model;
     private Location currentLocation;
+    private FirebaseUser firebaseUser;
+    private User user;
+    private FirebaseFirestore database;
+
 
     // UI References
     private TextView textViewName;
@@ -36,8 +51,12 @@ public class ViewLocationDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_location_details);
 
         // Initiate Models
-        model = Model.getModel();
-        currentLocation = model.getCurrentLocation();
+//        model = Model.getModel();
+//        currentLocation = model.getCurrentLocation();
+//        auth = FirebaseAuth.getInstance();
+//        currentUser = model.getUser(auth.getCurrentUser().getUid());
+        currentLocation = getIntent().getParcelableExtra("Location Passed");
+        user = getIntent().getParcelableExtra("User Model");
 
         // Initiate UI References
         textViewName = findViewById(R.id.location_name);
@@ -66,4 +85,29 @@ public class ViewLocationDetailsActivity extends AppCompatActivity {
         }
         //TODO: handle situation where loading location info fails
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser == null) {
+            Intent intent = new Intent(this, WelcomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        }
+    }
+
+    public void onClickViewDonation(View view) {
+        if (user.getUserType() == User.UserType.LOCATION_EMPLOYEE) {
+            Intent intent = new Intent(ViewLocationDetailsActivity.this, ViewDonationActivity.class);
+            intent.putExtra("User Model", (Parcelable) user);
+            intent.putExtra("Current Location", currentLocation);
+            startActivity(intent);
+        } else {
+            Log.d(TAG, "View inventory access denied");
+            Toast.makeText(getApplicationContext(), "You do not have permission to view the inventory.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }

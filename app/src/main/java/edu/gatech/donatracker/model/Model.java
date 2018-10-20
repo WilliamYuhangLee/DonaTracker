@@ -30,6 +30,9 @@ public class Model {
     // Hold current Location
     private Location currentLocation;
 
+    // Hold current donation, TODO change this to paresal
+    private Donation currentDonation;
+
     // Constructor
     private Model() {
         users = new HashMap<>();
@@ -57,6 +60,14 @@ public class Model {
 
     public Location getCurrentLocation() {
         return currentLocation;
+    }
+
+    public Donation getCurrentDonation() {
+        return currentDonation;
+    }
+
+    public void setCurrentDonation(Donation currentDonation) {
+        this.currentDonation = currentDonation;
     }
 
     /**

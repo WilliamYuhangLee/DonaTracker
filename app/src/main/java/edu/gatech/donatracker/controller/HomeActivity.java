@@ -2,6 +2,7 @@ package edu.gatech.donatracker.controller;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -14,6 +15,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.io.Serializable;
 
 import edu.gatech.donatracker.R;
 import edu.gatech.donatracker.model.Model;
@@ -55,14 +58,6 @@ public class HomeActivity extends AppCompatActivity {
         // Set up models
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
-        if (firebaseUser == null) {
-            Toast.makeText(getApplicationContext(), "Access Server failed.", Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "Unable to get current Firebase user!");
-            Intent intent = new Intent(HomeActivity.this, WelcomeActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            finish();
-        }
         UID = firebaseUser.getUid();
         database = FirebaseFirestore.getInstance();
         userDocRef = database.collection("users").document(UID);
@@ -88,6 +83,7 @@ public class HomeActivity extends AppCompatActivity {
         });
         view_location_list_button.setOnClickListener(view -> {
             Intent intent = new Intent(HomeActivity.this, ViewLocationsActivity.class);
+            intent.putExtra("User Model", (Parcelable) user);
             startActivity(intent);
         });
     }
@@ -97,7 +93,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onStart();
         firebaseUser = mAuth.getCurrentUser();
         if (firebaseUser == null) {
-            Intent intent = new Intent(HomeActivity.this, WelcomeActivity.class);
+            Intent intent = new Intent(this, WelcomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();

@@ -1,17 +1,20 @@
 package edu.gatech.donatracker.model.user;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nullable;
 
-public class User {
+public class User implements Parcelable, Serializable {
 
     // CLASS
 
-    public enum UserType {
+    public enum UserType implements Serializable {
         ADMINISTRATOR("Administrator"),
         MANAGER("Manager"),
         LOCATION_EMPLOYEE("Location Employee"),
@@ -58,6 +61,11 @@ public class User {
         this.userType = userType;
     }
 
+    private User(Parcel in) {
+        UID = in.readString();
+        userType = (UserType) in.readSerializable();
+    }
+
     // Database handlers
 
     /**
@@ -72,6 +80,12 @@ public class User {
         return data;
     }
 
+    /**
+     * Manufacture a User instance from a HashMap passed from a database
+     *
+     * @param data a HashMap of <field, value> pairs
+     * @return a User instance generated from the data
+     */
     public static User unwrapData(Map<String, Object> data) {
         String UID = (String) data.get("UID");
         UserType userType = UserType.fromString((String) data.get("userType"));
@@ -84,6 +98,30 @@ public class User {
         Log.e("User.java", "Illegal User type instantiation!");
         return new User();
     }
+
+    // Implements Parcelable
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(UID);
+        dest.writeSerializable(userType);
+    }
+
+    // this is used to regenerate your object. All Parcelables must have a CREATOR that implements these two methods
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     // String Representation
     public String toString() {

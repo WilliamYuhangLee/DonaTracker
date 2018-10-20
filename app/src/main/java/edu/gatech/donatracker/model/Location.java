@@ -4,9 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
-import edu.gatech.donatracker.model.user.LocationEmployee;
+import java.util.UUID;
 
 /**
  * Created by Yuhang Li on 2018/09/28
@@ -19,11 +19,11 @@ public class Location implements Parcelable {
     private static int nextId = 0;
 
     // Instance variables
-    private int id;
-    private List<LocationEmployee> localEmployees;
-    private List<Donation> inventory;
+    private String id;
     private String name;
     private String type;
+    private List<String> employees;
+    private List<String> inventory;
     private double longitude;
     private double latitude;
     private String address;
@@ -36,30 +36,95 @@ public class Location implements Parcelable {
     // Constructors
 
     public Location() {
-        localEmployees = new ArrayList<>();
+        id = UUID.randomUUID().toString();
+        employees = new ArrayList<>();
         inventory = new ArrayList<>();
-        id = nextId++;
+    }
+
+    private Location (Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        type = in.readString();
+        employees = new ArrayList<>();
+        in.readList(employees, null);
+        inventory = new ArrayList<>();
+        in.readList(inventory, null);
+        longitude = in.readDouble();
+        latitude = in.readDouble();
+        address = in.readString();
+        phone = in.readString();
+        city = in.readString();
+        state = in.readString();
+        zip = in.readInt();
+        website = in.readString();
+    }
+
+    private Location(String id, String name, String type, List<String> employees, List<String> inventory,
+                     double longitude, double latitude, String address, String phone, String city, String state, int zip, String website) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.employees = employees;
+        this.inventory = inventory;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.address = address;
+        this.phone = phone;
+        this.city = city;
+        this.state = state;
+        this.zip = zip;
+        this.website = website;
+    }
+
+    // Database Handlers
+
+    public HashMap<String, Object> wrapData() {
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("id", id);
+        data.put("name", name);
+        data.put("type", type);
+        data.put("employees", employees);
+        data.put("inventory", inventory);
+        data.put("longitude", longitude);
+        data.put("latitude", latitude);
+        data.put("address", address);
+        data.put("phone", phone);
+        data.put("city", city);
+        data.put("state", state);
+        data.put("zip", zip);
+        data.put("website", website);
+        return data;
+    }
+
+    public static Location unwrapData(HashMap<String, Object> data) {
+        return new Location((String) data.get("id"), (String) data.get("name"), (String) data.get("type"),
+                (List<String>) data
+                .get("employees"), (List<String>) data.get
+                ("inventory"), (double) data.get("longitude"), (double) data.get("latitude"), (String) data.get
+                ("address"), (String) data.get("phone"),
+                (String) data.get("city"), (String) data.get("state"), (int) data.get("zip"), (String) data.get
+                ("website"));
     }
 
     // Data Management
 
-    public boolean addEmployee(LocationEmployee employee) {
-        return localEmployees.add(employee);
+    public boolean addEmployee(String employee) {
+        return employees.add(employee);
     }
 
     public boolean addEmployees(List employees) {
-        return localEmployees.addAll(employees);
+        return this.employees.addAll(employees);
     }
 
-    public boolean removeEmployee(LocationEmployee employee) {
-        return localEmployees.remove(employee);
+    public boolean removeEmployee(String employee) {
+        return employees.remove(employee);
     }
 
-    public List<LocationEmployee> viewEmployees() {
-        return new ArrayList<>(localEmployees);
+    public List<String> viewEmployees() {
+        return new ArrayList<>(employees);
     }
 
-    public boolean addDonation(Donation donation) {
+    public boolean addDonation(String donation) {
         return inventory.add(donation);
     }
 
@@ -67,11 +132,11 @@ public class Location implements Parcelable {
         return inventory.addAll(donations);
     }
 
-    public boolean removeDonation(Donation donation) {
+    public boolean removeDonation(String donation) {
         return inventory.remove(donation);
     }
 
-    public List<Donation> viewInventory() {
+    public List<String> viewInventory() {
         return new ArrayList<>(inventory);
     }
 
@@ -91,6 +156,22 @@ public class Location implements Parcelable {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public List<String> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<String> employees) {
+        this.employees = employees;
+    }
+
+    public List<String> getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(List<String> inventory) {
+        this.inventory = inventory;
     }
 
     public double getLongitude() {
@@ -157,7 +238,7 @@ public class Location implements Parcelable {
         this.website = website;
     }
 
-    public int getId() {
+    public String getId() {
         return this.id;
     }
 
@@ -173,8 +254,11 @@ public class Location implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
         dest.writeString(name);
         dest.writeString(type);
+        dest.writeList(employees);
+        dest.writeList(inventory);
         dest.writeDouble(longitude);
         dest.writeDouble(latitude);
         dest.writeString(address);
@@ -195,19 +279,4 @@ public class Location implements Parcelable {
             return new Location[size];
         }
     };
-
-    // example constructor that takes a Parcel and gives you an object populated with it's values
-    private Location (Parcel in) {
-         name = in.readString();
-         type = in.readString();
-         longitude = in.readDouble();
-         latitude = in.readDouble();
-         address = in.readString();
-         phone = in.readString();
-         city = in.readString();
-         state = in.readString();
-         zip = in.readInt();
-         website = in.readString();
-    }
-
 }
