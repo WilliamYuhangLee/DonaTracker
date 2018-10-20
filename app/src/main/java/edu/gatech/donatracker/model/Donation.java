@@ -30,6 +30,15 @@ public class Donation {
 
     // Getters and Setters
 
+
+    public Date getDonationTime() {
+        return donationTime;
+    }
+
+    public Location getDonationLocation() {
+        return donationLocation;
+    }
+
     public String getShortDescription() {
         return shortDescription;
     }
