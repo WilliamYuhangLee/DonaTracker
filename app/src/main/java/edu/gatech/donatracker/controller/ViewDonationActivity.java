@@ -74,6 +74,7 @@ public class ViewDonationActivity extends AppCompatActivity{
 
     public void onClickAddDonation(View view) {
         Intent intent = new Intent(ViewDonationActivity.this, EditDonationDetailActivity.class);
+        intent.putExtra("Location", currentLocation);
         startActivity(intent);
     }
 
@@ -140,10 +141,7 @@ public class ViewDonationActivity extends AppCompatActivity{
                             pass along the id of the course so we can retrieve the correct data in
                             the next window
                          */
-                    //intent.putExtra("DonationPassed", holder.myDonation.getKey());
-
-                    //TODO use a parsel to pass
-                    model.setCurrentDonation(holder.myDonation);
+                    intent.putExtra("Donation", holder.myDonation);
 
                     //now just display the new window
                     context.startActivity(intent);

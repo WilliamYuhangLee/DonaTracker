@@ -6,8 +6,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import edu.gatech.donatracker.R;
 import edu.gatech.donatracker.model.Donation;
+import edu.gatech.donatracker.model.Location;
 import edu.gatech.donatracker.model.Model;
 
 public class EditDonationDetailActivity extends AppCompatActivity {
@@ -30,6 +33,7 @@ public class EditDonationDetailActivity extends AppCompatActivity {
        Data for student being edited.
      */
     private Donation currentDonation;
+    private Location currentLocation;
 
     /* ***********************
        flag for whether this is a new student being added or an existing student being edited;
@@ -52,8 +56,8 @@ public class EditDonationDetailActivity extends AppCompatActivity {
         /*
            If a student has been passed in, this was an edit, if not, this is a new add
          */
-        model = Model.getModel();
-        currentDonation = model.getCurrentDonation();
+        currentDonation = getIntent().getParcelableExtra("Donation");
+        currentLocation = getIntent().getParcelableExtra("Location");
 
         if (currentDonation != null) {
             editTextShortDescription.setText(currentDonation.getShortDescription());
@@ -62,7 +66,7 @@ public class EditDonationDetailActivity extends AppCompatActivity {
             editTextComment.setText(currentDonation.getComments());
             editing = true;
         } else {
-            currentDonation = new Donation(model.getCurrentLocation().getKey());
+            currentDonation = new Donation(currentLocation.getKey());
             editing = false;
         }
     }
@@ -80,9 +84,18 @@ public class EditDonationDetailActivity extends AppCompatActivity {
         currentDonation.setComments(editTextComment.getText().toString());
 
         Log.d("Edit", (editing ? "Edit": "Add") + " donation data: " + currentDonation.toString());
+
+        FirebaseFirestore.getInstance().collection("donations")
+                .document(currentDonation.getUuid()).set(currentDonation).addOnCompleteListener(v -> {
+
+        });
         if (!editing) {
 //            model.getCurrentLocation().addDonation(currentDonation);//todo
+//            ApiFuture<WriteResult> future = db.collection("cities").document("LA").set(city);
+            //TODO save a new donation object on DB
             Log.d("Save", "Save new donation");
+        } else {
+            //TODO update changed Donation object on DB
         }
 
         finish();

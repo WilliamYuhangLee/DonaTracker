@@ -1,5 +1,9 @@
 package edu.gatech.donatracker.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -10,7 +14,7 @@ import java.util.UUID;
  *
  * Represents a donated item
  */
-public class Donation {
+public class Donation implements Parcelable {
 
 //    // Category inner class
 //    public static class Category {
@@ -50,6 +54,18 @@ public class Donation {
     public Donation() {
     }
 
+    public Donation(String uuid, Date donationTime, int donationLocation,
+                    String shortDescription, String fullDescription, double valueInUSD,
+                    List<String> category, String comments) {
+        this.uuid = uuid;
+        this.donationTime = donationTime;
+        this.donationLocation = donationLocation;
+        this.shortDescription = shortDescription;
+        this.fullDescription = fullDescription;
+        this.valueInUSD = valueInUSD;
+        this.category = category;
+        this.comments = comments;
+    }
     public Donation(int location) {
         uuid = UUID.randomUUID().toString();
         donationTime = Calendar.getInstance().getTime();
@@ -98,7 +114,51 @@ public class Donation {
         this.comments = comments;
     }
 
-//    public Bitmap getPicture() {
+    public String getUuid() {
+        return uuid;
+    }
+
+    private Donation(Parcel in) {
+        uuid = in.readString();
+        donationTime = (Date) in.readSerializable();
+        donationLocation = in.readInt();
+        shortDescription = in.readString();
+        fullDescription = in.readString();
+        valueInUSD = in.readDouble();
+        category = (List<String>) in.readSerializable();
+        comments = in.readString();
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(uuid);
+        dest.writeSerializable(donationTime);
+        dest.writeInt(donationLocation);
+        dest.writeString(shortDescription);
+        dest.writeString(fullDescription);
+        dest.writeDouble(valueInUSD);
+        dest.writeSerializable((Serializable) category);
+        dest.writeString(comments);
+    }
+
+    public static final Parcelable.Creator<Donation> CREATOR
+            = new Parcelable.Creator<Donation>() {
+        public Donation createFromParcel(Parcel in) {
+            return new Donation(in);
+        }
+
+        public Donation[] newArray(int size) {
+            return new Donation[size];
+        }
+    };
+
+    //    public Bitmap getPicture() {
 //        return picture;
 //    }
 //

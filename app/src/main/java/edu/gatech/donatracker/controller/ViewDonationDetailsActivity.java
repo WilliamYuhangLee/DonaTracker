@@ -30,8 +30,7 @@ public class ViewDonationDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_location_details);
 
         // Initiate Models
-        model = Model.getModel();
-        currentDonation = model.getCurrentDonation();
+        currentDonation = getIntent().getParcelableExtra("Donation");
 
         // Initiate UI References
         textViewDonationTime = findViewById(R.id.donation_time);
@@ -45,6 +44,7 @@ public class ViewDonationDetailsActivity extends AppCompatActivity {
         // Fill text fields with current Location info
         if (currentDonation != null) {
             textViewDonationTime.append(currentDonation.getDonationTime().toString());
+            //TODO use the name instead -> might have to query for the location
             textViewDonationLocation.append(Integer.toString(currentDonation.getDonationLocation()));
             textViewFullDescription.append(currentDonation.getFullDescription());
             textViewValueInUSD.append(Double.toString(currentDonation.getValueInUSD()));
@@ -56,7 +56,7 @@ public class ViewDonationDetailsActivity extends AppCompatActivity {
     }
     public void onClickEditDonation(View view) {
         Intent intent = new Intent(ViewDonationDetailsActivity.this, EditDonationDetailActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("Donation", currentDonation);
         startActivity(intent);
     }
 }
