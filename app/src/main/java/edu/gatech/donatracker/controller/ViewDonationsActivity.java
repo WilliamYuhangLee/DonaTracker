@@ -14,10 +14,11 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import edu.gatech.donatracker.R;
@@ -26,19 +27,23 @@ import edu.gatech.donatracker.model.Location;
 import edu.gatech.donatracker.model.Model;
 import edu.gatech.donatracker.model.user.User;
 
-public class ViewDonationActivity extends AppCompatActivity{
+public class ViewDonationsActivity extends AppCompatActivity{
 
-    public static final String TAG = "ViewDonationActivity.class";
+    public static final String TAG = "ViewDonationsActivity.class";
 
     // Models
     private Location currentLocation;
+    private DocumentReference locationRef;
     private List<String> donationIDList;
     private List<Donation> donationList;
+    private CollectionReference donationsRef;
+
     private FirebaseUser firebaseUser;
     private User user;
 
     // UI References
     private RecyclerView recyclerView;
+    SimpleDonationRecyclerViewAdapter recyclerViewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,37 +55,65 @@ public class ViewDonationActivity extends AppCompatActivity{
         donationIDList = currentLocation.viewInventory();
         user = getIntent().getParcelableExtra("User Model");
         donationList = new ArrayList<>();
-        CollectionReference donationsRef = FirebaseFirestore.getInstance().collection("locations")
-                .document(Integer.toString(currentLocation.getKey())).collection("inventory");
-        donationsRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    Log.d(TAG, "Donation " + document.get("shortDescription") + " fetch successful!");
-                    donationList.add(document.toObject(Donation.class));
-                }
-            } else {
-                Log.e(TAG, "Inventory fetch failed!", task.getException());
-            }
-        });
+        locationRef = FirebaseFirestore.getInstance().collection("locations").document(Integer.toString
+                (currentLocation.getKey()));
+
         // Initiate UI References
         recyclerView = findViewById(R.id.recycler_view_view_donations_donations);
 
         // Set up adapters
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        ViewDonationActivity.SimpleDonationRecyclerViewAdapter adapter =
-                new ViewDonationActivity.SimpleDonationRecyclerViewAdapter(donationList);
-        recyclerView.setAdapter(adapter);
+        recyclerViewAdapter = new SimpleDonationRecyclerViewAdapter(donationList);
+        recyclerView.setAdapter(recyclerViewAdapter);
+
+        locationRef.get().addOnSuccessListener(documentSnapshot -> {
+            donationIDList = (List<String>) documentSnapshot.getData().get("inventory");
+            Log.d(TAG, "Donation ID list fetch successful!");
+            updateDonations();
+        }).addOnFailureListener(e -> {
+            Log.w(TAG, "Donation ID list fetch failed!", e);
+        });
+    }
+
+    private void updateDonations() {
+        donationList.clear();
+        for (String donationID : donationIDList) {
+            DocumentReference donationRef = FirebaseFirestore.getInstance().collection("donations").document(donationID);
+            donationRef.get().addOnSuccessListener(documentSnapshot -> {
+                donationList.add(documentSnapshot.toObject(Donation.class));
+                Log.d(TAG, "Donation[" + donationID + "] fetch successful!");
+                recyclerViewAdapter.notifyDataSetChanged();
+            }).addOnFailureListener(e -> {
+                Log.w(TAG, "Donation[" + donationID + "] fetch failed!", e);
+            });
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        locationRef.addSnapshotListener(((documentSnapshot, e) -> {
+            if (e != null) {
+                Log.w(TAG, "Location data update failed", e);
+                return;
+            }
+            if (documentSnapshot != null && documentSnapshot.exists()) {
+                Log.d(TAG, "Location data update successful!");
+                donationIDList = (List) documentSnapshot.get("inventory");
+                updateDonations();
+            }
+        }));
     }
 
     public void onClickAddDonation(View view) {
-        Intent intent = new Intent(ViewDonationActivity.this, EditDonationDetailActivity.class);
+        Intent intent = new Intent(ViewDonationsActivity.this, EditDonationDetailActivity.class);
         intent.putExtra("Location", currentLocation);
         startActivity(intent);
     }
 
     // RecyclerViewAdapter inner class
     private class SimpleDonationRecyclerViewAdapter
-            extends RecyclerView.Adapter<ViewDonationActivity.SimpleDonationRecyclerViewAdapter.ViewHolder> {
+            extends RecyclerView.Adapter<SimpleDonationRecyclerViewAdapter.ViewHolder> {
 
         /**
          * Collection of the items to be shown in this list.
@@ -97,8 +130,7 @@ public class ViewDonationActivity extends AppCompatActivity{
         }
 
         @Override
-        public ViewDonationActivity.SimpleDonationRecyclerViewAdapter
-                .ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             /*
 
               This sets up the view for each individual item in the recycler display
@@ -107,14 +139,13 @@ public class ViewDonationActivity extends AppCompatActivity{
              */
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.donation_list_content, parent, false);
-            return new ViewDonationActivity.SimpleDonationRecyclerViewAdapter.ViewHolder(view);
+            return new ViewDonationsActivity.SimpleDonationRecyclerViewAdapter.ViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(final ViewDonationActivity.SimpleDonationRecyclerViewAdapter
+        public void onBindViewHolder(final ViewDonationsActivity.SimpleDonationRecyclerViewAdapter
                 .ViewHolder holder, int position) {
 
-            final Model model = Model.getModel();
             /*
             This is where we have to bind each data element in the list (given by position parameter)
             to an element in the view (which is one of our two TextView widgets
@@ -125,7 +156,7 @@ public class ViewDonationActivity extends AppCompatActivity{
               Now we bind the data to the widgets.  In this case, pretty simple, put the id in one
               textview and the string rep of a course in the other.
              */
-            holder.mContentView.setText(myDonations.get(position).toString());
+            holder.mContentView.setText(myDonations.get(position).getShortDescription());
 
             /*
              * set up a listener to handle if the user clicks on this list item, what should happen?

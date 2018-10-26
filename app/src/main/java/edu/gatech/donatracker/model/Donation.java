@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -50,8 +51,25 @@ public class Donation implements Parcelable {
     private String comments;
 //    private Bitmap picture;
 
+    // String Representation (debug purpose)
+
+    @Override
+    public String toString() {
+        return "Donation[" + uuid + "] " + shortDescription;
+    }
+
     // Constructors
+
+    // no-args constructor for use of toObject()
     public Donation() {
+        uuid = "";
+        donationTime = new Date();
+        donationLocation = 0;
+        shortDescription = "";
+        fullDescription = "";
+        valueInUSD = 0;
+        category = new ArrayList<>();
+        comments = "";
     }
 
     public Donation(String uuid, Date donationTime, int donationLocation,
@@ -118,6 +136,26 @@ public class Donation implements Parcelable {
         return uuid;
     }
 
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public void setDonationTime(Date donationTime) {
+        this.donationTime = donationTime;
+    }
+
+    public void setDonationLocation(int donationLocation) {
+        this.donationLocation = donationLocation;
+    }
+
+    public List<String> getCategory() {
+        return category;
+    }
+
+    public void setCategory(List<String> category) {
+        this.category = category;
+    }
+
     private Donation(Parcel in) {
         uuid = in.readString();
         donationTime = (Date) in.readSerializable();
@@ -129,6 +167,7 @@ public class Donation implements Parcelable {
         comments = in.readString();
     }
 
+    // Implement Parcelable
 
     @Override
     public int describeContents() {

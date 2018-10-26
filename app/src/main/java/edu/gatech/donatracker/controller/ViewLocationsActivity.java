@@ -89,12 +89,11 @@ public class ViewLocationsActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        locationsRef.addSnapshotListener(this, ((queryDocumentSnapshots, e) -> {
+        locationsRef.addSnapshotListener(this, (queryDocumentSnapshots, e) -> {
             if (e != null) {
                 Log.w(TAG, "Location update failed.", e);
                 return;
             }
-            List<String> cities = new ArrayList<>();
             for (DocumentChange change : queryDocumentSnapshots.getDocumentChanges()) {
                 switch (change.getType()) {
                     case ADDED:
@@ -121,8 +120,7 @@ public class ViewLocationsActivity extends AppCompatActivity {
                         break;
                 }
             }
-            Log.d(TAG, "");
-        }));
+        });
     }
 
     private void uploadLocations(List<Location> locations) {

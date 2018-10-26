@@ -5,19 +5,16 @@ import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import edu.gatech.donatracker.R;
 import edu.gatech.donatracker.model.Location;
-import edu.gatech.donatracker.model.Model;
 import edu.gatech.donatracker.model.user.User;
 
 /**
@@ -99,8 +96,9 @@ public class ViewLocationDetailsActivity extends AppCompatActivity {
     }
 
     public void onClickViewDonation(View view) {
-        if (user.getUserType() == User.UserType.LOCATION_EMPLOYEE || user.getUserType() == User.UserType.MANAGER) {
-            Intent intent = new Intent(ViewLocationDetailsActivity.this, ViewDonationActivity.class);
+        if (true || user.getUserType() == User.UserType.LOCATION_EMPLOYEE || user.getUserType() == User.UserType
+                .MANAGER) {
+            Intent intent = new Intent(ViewLocationDetailsActivity.this, ViewDonationsActivity.class);
             intent.putExtra("User Model", (Parcelable) user);
             intent.putExtra("Current Location", currentLocation);
             startActivity(intent);
