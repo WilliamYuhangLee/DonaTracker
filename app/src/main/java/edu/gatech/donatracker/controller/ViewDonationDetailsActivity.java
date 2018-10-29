@@ -27,7 +27,7 @@ public class ViewDonationDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_location_details);
+        setContentView(R.layout.activity_view_donation_details);
 
         // Initiate Models
         currentDonation = getIntent().getParcelableExtra("Donation");
@@ -43,12 +43,12 @@ public class ViewDonationDetailsActivity extends AppCompatActivity {
 
         // Fill text fields with current Location info
         if (currentDonation != null) {
-            textViewDonationTime.append(currentDonation.getDonationTime().toString());
+            textViewDonationTime.setText("Donation Time: " + currentDonation.getDonationTime().toString());
             //TODO use the name instead -> might have to query for the location
-            textViewDonationLocation.append(Integer.toString(currentDonation.getDonationLocation()));
-            textViewFullDescription.append(currentDonation.getFullDescription());
-            textViewValueInUSD.append(Double.toString(currentDonation.getValueInUSD()));
-            textViewComments.append(currentDonation.getComments());
+            textViewDonationLocation.setText("Donation Location: " + Integer.toString(currentDonation.getDonationLocation()));
+            textViewFullDescription.setText("Full  Description: " + currentDonation.getFullDescription());
+            textViewValueInUSD.setText("Value in USD: " + Double.toString(currentDonation.getValueInUSD()));
+            textViewComments.setText("Comments: " + currentDonation.getComments());
             //TODO implement picture later on
 //            textViewPicture.append(currentDonation.get());
         }
