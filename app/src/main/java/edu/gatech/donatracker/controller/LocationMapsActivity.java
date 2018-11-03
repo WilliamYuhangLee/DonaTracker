@@ -11,6 +11,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+
 import edu.gatech.donatracker.R;
 
 public class LocationMapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -55,8 +56,7 @@ public class LocationMapsActivity extends FragmentActivity implements OnMapReady
 
         // Add a marker in Sydney and move the camera
         LatLng mLocationCord = new LatLng(Lat, Lng);
-        mMap.addMarker(new MarkerOptions().position(mLocationCord).title(Name + "\n"
-                + Phone));
+        mMap.addMarker(new MarkerOptions().position(mLocationCord).title(Phone).snippet(Name));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(mLocationCord));
     }
 }
