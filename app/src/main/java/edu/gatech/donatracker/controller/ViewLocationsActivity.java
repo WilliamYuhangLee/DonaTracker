@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.gatech.donatracker.R;
+import edu.gatech.donatracker.database.FirebaseManager;
+import edu.gatech.donatracker.database.UpdateHandler;
 import edu.gatech.donatracker.model.Location;
 import edu.gatech.donatracker.model.user.User;
 import edu.gatech.donatracker.util.CSVFile;
@@ -35,7 +37,7 @@ import edu.gatech.donatracker.util.LocationFactory;
  */
 public class ViewLocationsActivity extends AppCompatActivity {
 
-    public static final String TAG = "ViewLocationsActivity.class";
+    public static final String TAG = ViewLocationsActivity.class.getSimpleName();
 
     // Models
     private User user;
@@ -89,38 +91,10 @@ public class ViewLocationsActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        locationsRef.addSnapshotListener(this, (queryDocumentSnapshots, e) -> {
-            if (e != null) {
-                Log.w(TAG, "Location update failed.", e);
-                return;
-            }
-            for (DocumentChange change : queryDocumentSnapshots.getDocumentChanges()) {
-                switch (change.getType()) {
-                    case ADDED:
-                        Log.d(TAG, "Location added!");
-                        locationList.add(change.getDocument().toObject(Location.class));
-                        recyclerViewAdapter.notifyDataSetChanged();
-                        break;
-                    case MODIFIED:
-                        Log.d(TAG, "Location modified!");
-                        int key = ((Long) change.getDocument().getData().get("key")).intValue();
-                        Location updated = locationList.stream().filter(location -> location.getKey() == key).findFirst
-                                ().get();
-                        locationList.remove(updated);
-                        locationList.add(change.getDocument().toObject(Location.class));
-                        recyclerViewAdapter.notifyDataSetChanged();
-                        break;
-                    case REMOVED:
-                        Log.d(TAG, "Location removed!");
-                        key = ((Long) change.getDocument().getData().get("key")).intValue();
-                        Location removed = locationList.stream().filter(location -> location.getKey() == key).findFirst
-                                ().get();
-                        locationList.remove(removed);
-                        recyclerViewAdapter.notifyDataSetChanged();
-                        break;
-                }
-            }
-        });
+        locationList.clear();
+        recyclerViewAdapter.notifyDataSetChanged();
+        FirebaseManager.updateObjects(this, Location.class, locationList, new RecyclerViewAdapterUpdateHandler
+                (recyclerViewAdapter), locationsRef);
     }
 
     private void uploadLocations(List<Location> locations) {
@@ -212,17 +186,14 @@ public class ViewLocationsActivity extends AppCompatActivity {
          * about the binding between the model element (in this case a Course) and the widgets in
          * the list view (in this case the two TextView)
          */
-
         class ViewHolder extends RecyclerView.ViewHolder {
             final View mView;
-//            public final TextView mIdView;
             final TextView mContentView;
             Location myLocation;
 
             ViewHolder(View view) {
                 super(view);
                 mView = view;
-//                mIdView = (TextView) view.findViewById(R.id.id);
                 mContentView = (TextView) view.findViewById(R.id.content);
             }
 
@@ -230,6 +201,32 @@ public class ViewLocationsActivity extends AppCompatActivity {
             public String toString() {
                 return super.toString() + " '" + mContentView.getText() + "'";
             }
+        }
+    }
+    public class RecyclerViewAdapterUpdateHandler implements UpdateHandler {
+
+        private SimpleLocationRecyclerViewAdapter adapter;
+
+        public RecyclerViewAdapterUpdateHandler(SimpleLocationRecyclerViewAdapter adapter) {
+            this.adapter = adapter;
+        }
+
+        @Override
+        public void onAdded(DocumentChange change) {
+            adapter.notifyItemInserted(change.getNewIndex());
+        }
+
+        @Override
+        public void onModified(DocumentChange change) {
+            if (change.getOldIndex() != change.getNewIndex()) {
+                adapter.notifyItemMoved(change.getOldIndex(), change.getNewIndex());
+            }
+            adapter.notifyItemChanged(change.getNewIndex());
+        }
+
+        @Override
+        public void onRemoved(DocumentChange change) {
+            adapter.notifyItemRemoved(change.getOldIndex());
         }
     }
 }

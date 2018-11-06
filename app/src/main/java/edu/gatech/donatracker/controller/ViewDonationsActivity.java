@@ -18,13 +18,11 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import edu.gatech.donatracker.R;
 import edu.gatech.donatracker.model.Donation;
 import edu.gatech.donatracker.model.Location;
-import edu.gatech.donatracker.model.Model;
 import edu.gatech.donatracker.model.user.User;
 
 public class ViewDonationsActivity extends AppCompatActivity{
@@ -48,7 +46,7 @@ public class ViewDonationsActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_donation);
+        setContentView(R.layout.activity_view_donations);
 
         // Initiate Models
         currentLocation = getIntent().getParcelableExtra("Current Location");
@@ -139,12 +137,11 @@ public class ViewDonationsActivity extends AppCompatActivity{
              */
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.donation_list_content, parent, false);
-            return new ViewDonationsActivity.SimpleDonationRecyclerViewAdapter.ViewHolder(view);
+            return new ViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(final ViewDonationsActivity.SimpleDonationRecyclerViewAdapter
-                .ViewHolder holder, int position) {
+        public void onBindViewHolder(final ViewHolder holder, int position) {
 
             /*
             This is where we have to bind each data element in the list (given by position parameter)
@@ -194,14 +191,12 @@ public class ViewDonationsActivity extends AppCompatActivity{
 
         class ViewHolder extends RecyclerView.ViewHolder {
             final View mView;
-            //            public final TextView mIdView;
             final TextView mContentView;
             Donation myDonation;
 
             ViewHolder(View view) {
                 super(view);
                 mView = view;
-//                mIdView = (TextView) view.findViewById(R.id.id);
                 mContentView = (TextView) view.findViewById(R.id.content);
             }
 

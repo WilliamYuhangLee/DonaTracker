@@ -19,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.io.Serializable;
 
 import edu.gatech.donatracker.R;
+import edu.gatech.donatracker.database.FirebaseManager;
 import edu.gatech.donatracker.model.Model;
 import edu.gatech.donatracker.model.user.User;
 
@@ -61,17 +62,22 @@ public class HomeActivity extends AppCompatActivity {
         UID = firebaseUser.getUid();
         database = FirebaseFirestore.getInstance();
         userDocRef = database.collection("users").document(UID);
-        userDocRef.get().addOnSuccessListener(documentSnapshot -> {
-            if (documentSnapshot.exists()) {
-                user = User.unwrapData(documentSnapshot.getData());
-                greeting_textView.setText("Welcome, " + user.getUserType());
-                Log.d(TAG, "User data fetch successful!");
-            } else {
-                Log.e(TAG, "User profile doesn't exist on server!");
-            }
-        }).addOnFailureListener(e -> {
-            Log.e(TAG, "User data fetch failed!", e);
-        });
+//        userDocRef.get().addOnSuccessListener(documentSnapshot -> {
+//            if (documentSnapshot.exists()) {
+//                user = User.unwrapData(documentSnapshot.getData());
+//                greeting_textView.setText("Welcome, " + user.getUserType());
+//                Log.d(TAG, "User data fetch successful!");
+//            } else {
+//                Log.e(TAG, "User profile doesn't exist on server!");
+//            }
+//        }).addOnFailureListener(e -> {
+//            Log.e(TAG, "User data fetch failed!", e);
+//        });
+
+        FirebaseManager.getObject(this, User::unwrapData, object -> {
+            user = object;
+            greeting_textView.setText("Welcome, " + user.getUserType());
+        }, userDocRef);
 
         // Set handlers
         log_out_button.setOnClickListener(v -> {
