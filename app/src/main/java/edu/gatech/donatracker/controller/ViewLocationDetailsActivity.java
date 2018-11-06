@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +42,7 @@ public class ViewLocationDetailsActivity extends AppCompatActivity {
     private TextView textViewState;
     private TextView textViewZip;
     private TextView textViewWebsite;
+    private Button buttonMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +68,7 @@ public class ViewLocationDetailsActivity extends AppCompatActivity {
         textViewState = findViewById(R.id.location_state);
         textViewZip = findViewById(R.id.location_zip);
         textViewWebsite = findViewById(R.id.location_website);
+        buttonMap = findViewById(R.id.view_location_map);
 
         // Fill text fields with current Location info
         if (currentLocation != null) {
@@ -106,6 +109,15 @@ public class ViewLocationDetailsActivity extends AppCompatActivity {
             Log.d(TAG, "View inventory access denied");
             Toast.makeText(getApplicationContext(), "You do not have permission to view the inventory.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void onClickViewMap(View view) {
+        Intent intent = new Intent(ViewLocationDetailsActivity.this, LocationMapsActivity.class);
+        intent.putExtra("Lng", currentLocation.getLongitude());
+        intent.putExtra("Lat", currentLocation.getLongitude());
+        intent.putExtra("Name", currentLocation.getName());
+        intent.putExtra("TEL", currentLocation.getPhone());
+        startActivity(intent);
     }
 
 }
