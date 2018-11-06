@@ -84,9 +84,9 @@ public class EditDonationDetailActivity extends AppCompatActivity {
                 currentLocation.addDonation(currentDonation.getUuid());
                 DocumentReference locationRef = FirebaseFirestore.getInstance().collection("locations").document(String.valueOf(currentLocation.getKey()));
                 locationRef.set(currentLocation).addOnSuccessListener(v2 -> {
-                    Log.d(TAG, "Location inventory update successful!");
+                    Log.d(TAG, "Donation inventory update successful!");
                 }).addOnFailureListener(e -> {
-                    Log.w(TAG, "Location inventory update failed!", e);
+                    Log.w(TAG, "Donation inventory update failed!", e);
                 });
             }).addOnFailureListener(e -> {
                 Log.d(TAG, "Donation creation and upload failed!", e);
