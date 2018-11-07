@@ -45,7 +45,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         // Set up the adapter for the account type spinner
         ArrayAdapter<User.UserType> spinner_adapter = new ArrayAdapter<>(this, android.R.layout
-                .simple_spinner_dropdown_item, User.UserType.values());
+                .simple_spinner_dropdown_item, User.UserType.legalValues());
         mAccountTypeSpinner.setAdapter(spinner_adapter);
     }
 

@@ -9,5 +9,5 @@ package edu.gatech.donatracker.database;
  */
 @FunctionalInterface
 public interface QueryResultHandler<T> {
-    void onQuerySuccess(T object);
+    void onQuerySuccess(T result);
 }

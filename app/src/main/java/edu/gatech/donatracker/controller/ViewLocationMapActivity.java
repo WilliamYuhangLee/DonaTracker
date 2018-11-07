@@ -8,13 +8,17 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
 import edu.gatech.donatracker.R;
 
-public class LocationMapsActivity extends FragmentActivity implements OnMapReadyCallback {
+/**
+ * Created by Qiusen Huang on 2018/11/02
+ *
+ * Displays on Google Map the Location
+ */
+public class ViewLocationMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private double Lat;
@@ -33,7 +37,7 @@ public class LocationMapsActivity extends FragmentActivity implements OnMapReady
             Phone = extra.getString("TEL");
 
         }
-        setContentView(R.layout.activity_location_maps);
+        setContentView(R.layout.activity_view_location_map);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);

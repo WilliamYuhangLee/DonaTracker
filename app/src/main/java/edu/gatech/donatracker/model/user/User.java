@@ -12,9 +12,12 @@ import javax.annotation.Nullable;
 
 public class User implements Parcelable, Serializable {
 
+    private static final String TAG = User.class.getSimpleName();
+
     // CLASS
 
     public enum UserType implements Serializable {
+        DEVELOPER("Developer"),
         ADMINISTRATOR("Administrator"),
         MANAGER("Manager"),
         LOCATION_EMPLOYEE("Location Employee"),
@@ -31,14 +34,17 @@ public class User implements Parcelable, Serializable {
             return representation;
         }
 
-        @Nullable
         public static UserType fromString(String string) {
             for (UserType userType : UserType.values()) {
                 if (userType.representation.equalsIgnoreCase(string)) {
                     return userType;
                 }
             }
-            return null;
+            throw new IllegalArgumentException("No matching UserType!");
+        }
+
+        public static UserType[] legalValues() {
+            return new UserType[]{ADMINISTRATOR, MANAGER, LOCATION_EMPLOYEE, REGULAR_USER};
         }
     }
 
@@ -47,6 +53,9 @@ public class User implements Parcelable, Serializable {
     // Instance variables
     protected String UID;
     protected UserType userType;
+    protected String email;
+    protected String username;
+    protected boolean isLocked;
 
     // Constructors
     public User() {
@@ -90,13 +99,15 @@ public class User implements Parcelable, Serializable {
         String UID = (String) data.get("UID");
         UserType userType = UserType.fromString((String) data.get("userType"));
         switch (userType) {
+            case DEVELOPER: return new Developer(UID);
             case ADMINISTRATOR: return new Administrator(UID);
             case MANAGER: return new Manager(UID);
             case LOCATION_EMPLOYEE: return new LocationEmployee(UID);
             case REGULAR_USER: return new User(UID);
+            default:
+                Log.e(TAG, "Illegal User type instantiation!");
+                return new User(UID);
         }
-        Log.e("User.java", "Illegal User type instantiation!");
-        return new User();
     }
 
     // Implements Parcelable
@@ -129,6 +140,10 @@ public class User implements Parcelable, Serializable {
     }
 
     // Getters and Setters
+    public String getUID() {
+        return UID;
+    }
+
     public UserType getUserType() {
         return userType;
     }
@@ -137,7 +152,27 @@ public class User implements Parcelable, Serializable {
         this.userType = userType;
     }
 
-    public String getUID() {
-        return UID;
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    public void setLocked(boolean locked) {
+        isLocked = locked;
     }
 }

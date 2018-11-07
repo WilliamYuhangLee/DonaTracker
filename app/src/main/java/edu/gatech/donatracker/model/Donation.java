@@ -17,29 +17,6 @@ import java.util.UUID;
  */
 public class Donation implements Parcelable {
 
-//    // Category inner class
-//    public static class Category {
-//
-//        // Store all possible categories
-//        static List<Category> categories = new ArrayList<>();
-//        static HashMap<Category, HashMap<Category, Integer>> adjacencyMatrix= new HashMap<>();
-//
-//        // Fields
-//        String name;
-//
-//        // Constructors
-//        public Category(String name, Category parent) {
-//            this.name = name;
-//            if (adjacencyMatrix.containsKey(this)) {
-//
-//            } else {
-//                HashMap<Category, Integer> upMap = new HashMap<>();
-//                upMap.put(parent, -1)
-//                adjacencyMatrix.put(this,);
-//            }
-//        }
-//    }
-
     // Instance variables
     private String uuid;
     private Date donationTime;
@@ -62,14 +39,6 @@ public class Donation implements Parcelable {
 
     // no-args constructor for use of toObject()
     public Donation() {
-        uuid = "";
-        donationTime = new Date();
-        donationLocation = 0;
-        shortDescription = "";
-        fullDescription = "";
-        valueInUSD = 0;
-        category = new ArrayList<>();
-        comments = "";
     }
 
     public Donation(String uuid, Date donationTime, int donationLocation,

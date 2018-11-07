@@ -49,11 +49,6 @@ public class ViewLocationDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_location_details);
 
-        // Initiate Models
-//        model = Model.getModel();
-//        currentLocation = model.getCurrentLocation();
-//        auth = FirebaseAuth.getInstance();
-//        currentUser = model.getUser(auth.getCurrentUser().getUid());
         currentLocation = getIntent().getParcelableExtra("Location Passed");
         user = getIntent().getParcelableExtra("User Model");
 
@@ -99,8 +94,8 @@ public class ViewLocationDetailsActivity extends AppCompatActivity {
     }
 
     public void onClickViewDonation(View view) {
-        if (true || user.getUserType() == User.UserType.LOCATION_EMPLOYEE || user.getUserType() == User.UserType
-                .MANAGER) {
+        if (user.getUserType() == User.UserType.DEVELOPER || user.getUserType() == User.UserType.LOCATION_EMPLOYEE
+                || user.getUserType() == User.UserType.MANAGER) {
             Intent intent = new Intent(ViewLocationDetailsActivity.this, ViewDonationsActivity.class);
             intent.putExtra("User Model", (Parcelable) user);
             intent.putExtra("Current Location", currentLocation);
@@ -112,7 +107,7 @@ public class ViewLocationDetailsActivity extends AppCompatActivity {
     }
 
     public void onClickViewMap(View view) {
-        Intent intent = new Intent(ViewLocationDetailsActivity.this, LocationMapsActivity.class);
+        Intent intent = new Intent(ViewLocationDetailsActivity.this, ViewLocationMapActivity.class);
         intent.putExtra("Lng", currentLocation.getLongitude());
         intent.putExtra("Lat", currentLocation.getLongitude());
         intent.putExtra("Name", currentLocation.getName());

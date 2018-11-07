@@ -3,10 +3,7 @@ package edu.gatech.donatracker.controller;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,11 +13,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.io.Serializable;
-
 import edu.gatech.donatracker.R;
 import edu.gatech.donatracker.database.FirebaseManager;
-import edu.gatech.donatracker.model.Model;
 import edu.gatech.donatracker.model.user.User;
 
 public class HomeActivity extends AppCompatActivity {
@@ -62,22 +56,6 @@ public class HomeActivity extends AppCompatActivity {
         UID = firebaseUser.getUid();
         database = FirebaseFirestore.getInstance();
         userDocRef = database.collection("users").document(UID);
-//        userDocRef.get().addOnSuccessListener(documentSnapshot -> {
-//            if (documentSnapshot.exists()) {
-//                user = User.unwrapData(documentSnapshot.getData());
-//                greeting_textView.setText("Welcome, " + user.getUserType());
-//                Log.d(TAG, "User data fetch successful!");
-//            } else {
-//                Log.e(TAG, "User profile doesn't exist on server!");
-//            }
-//        }).addOnFailureListener(e -> {
-//            Log.e(TAG, "User data fetch failed!", e);
-//        });
-
-        FirebaseManager.getObject(this, User::unwrapData, object -> {
-            user = object;
-            greeting_textView.setText("Welcome, " + user.getUserType());
-        }, userDocRef);
 
         // Set handlers
         log_out_button.setOnClickListener(v -> {
@@ -104,13 +82,10 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-        userDocRef.addSnapshotListener(this, (documentSnapshot, e) -> {
-            if (documentSnapshot != null && documentSnapshot.exists()) {
-                user = User.unwrapData(documentSnapshot.getData());
-            } else if (e != null) {
-                Log.e(TAG, "User profile changed but update failed!", e);
-            }
-        });
+        FirebaseManager.updateObject(this, User::unwrapData, result -> {
+            user = result;
+            greeting_textView.setText(String.format("Welcome, %s", user.getUserType()));
+        }, userDocRef);
     }
 
     @Override

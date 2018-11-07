@@ -51,14 +51,15 @@
         <!--android:layout_marginTop="38dp" />-->
 
     <EditText
+        android:hint="Short Description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="text"
-        android:text="Short Description"
         android:ems="10"
         android:id="@+id/edit_short_description"
         android:layout_below="@+id/textViewShortDescription"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:autofillHints="Short Description" />
 
     <TextView
         android:text="Short Description:"
@@ -72,12 +73,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="text"
-        android:text="Full Description"
+        android:hint="Full Description"
         android:layout_marginTop="32dp"
         android:ems="10"
         android:id="@+id/edit_full_description"
         android:layout_below="@+id/edit_short_description"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:autofillHints="Full Description" />
 
     <TextView
         android:text="Full Description:"
@@ -92,11 +94,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="numberDecimal"
-        android:text="Value In USD"
+        android:hint="Value In USD"
         android:ems="10"
         android:id="@+id/edit_value_in_usd"
         android:layout_below="@+id/textViewValueInUSD"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:autofillHints="Value In USD" />
 
     <TextView
         android:text="Value In USD:"
@@ -111,11 +114,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="text"
-        android:text="Comment"
+        android:hint="Comment"
         android:ems="10"
         android:id="@+id/edit_comment"
         android:layout_below="@+id/textViewComment"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:autofillHints="Comment" />
 
     <TextView
         android:text="Comment:"

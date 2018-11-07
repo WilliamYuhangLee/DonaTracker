@@ -52,7 +52,8 @@ public class EditDonationDetailActivity extends AppCompatActivity {
         if (currentDonation != null) {
             editTextShortDescription.setText(currentDonation.getShortDescription());
             editTextFullDescription.setText(currentDonation.getFullDescription());
-            editTextValueInUSD.setText(Double.toString(currentDonation.getValueInUSD())); //TODO
+            editTextValueInUSD.setText(String.format(getResources().getConfiguration().getLocales().get(0), "%,.2f",
+                    currentDonation.getValueInUSD()));
             editTextComment.setText(currentDonation.getComments());
             editing = true;
         } else {

@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 import edu.gatech.donatracker.R;
 import edu.gatech.donatracker.model.Donation;
 import edu.gatech.donatracker.model.Location;
@@ -48,12 +50,13 @@ public class ViewDonationDetailsActivity extends AppCompatActivity {
 
         // Fill text fields with current Location info
         if (currentDonation != null) {
-            textViewDonationTime.setText("Time: " + currentDonation.getDonationTime().toString());
+            Locale locale = getResources().getConfiguration().getLocales().get(0);
+            textViewDonationTime.setText(String.format(locale, "Time: %tc", currentDonation.getDonationTime()));
             //TODO use the name instead -> might have to query for the location
-            textViewDonationLocation.setText("Location: " + Integer.toString(currentDonation.getDonationLocation()));
-            textViewFullDescription.setText("Description: " + currentDonation.getFullDescription());
-            textViewValueInUSD.setText("USD: "+ Double.toString(currentDonation.getValueInUSD()));
-            textViewComments.setText("Comments: " + currentDonation.getComments());
+            textViewDonationLocation.setText(String.format("Location: %s", Integer.toString(currentDonation.getDonationLocation())));
+            textViewFullDescription.setText(String.format("Description: %s", currentDonation.getFullDescription()));
+            textViewValueInUSD.setText(String.format(locale, "USD: %,.2f", currentDonation.getValueInUSD()));
+            textViewComments.setText(String.format("Comments: %s", currentDonation.getComments()));
             //TODO implement picture later on
 //            textViewPicture.append(currentDonation.get());
         }
