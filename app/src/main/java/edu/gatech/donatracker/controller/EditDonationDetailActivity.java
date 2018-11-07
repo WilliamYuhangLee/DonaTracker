@@ -38,10 +38,10 @@ public class EditDonationDetailActivity extends AppCompatActivity {
         /**
          * Grab the dialog widgets so we can get info for later
          */
-        editTextShortDescription = (EditText) findViewById(R.id.edit_short_description);
-        editTextFullDescription = (EditText) findViewById(R.id.edit_full_description);
-        editTextValueInUSD = (EditText) findViewById(R.id.edit_value_in_usd);
-        editTextComment = (EditText) findViewById(R.id.edit_comment);
+        editTextShortDescription = findViewById(R.id.edit_short_description);
+        editTextFullDescription = findViewById(R.id.edit_full_description);
+        editTextValueInUSD = findViewById(R.id.edit_value_in_usd);
+        editTextComment = findViewById(R.id.edit_comment);
 
         /*
            If a student has been passed in, this was an edit, if not, this is a new add

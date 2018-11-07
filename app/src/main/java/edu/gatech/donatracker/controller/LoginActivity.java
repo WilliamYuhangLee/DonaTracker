@@ -48,8 +48,8 @@ public class LoginActivity extends AppCompatActivity {
 
         // Initialize UI references
         mEmailView = findViewById(R.id.login_email_input);
-        mPasswordView = (EditText) findViewById(R.id.login_password_input);
-        mEmailSignInButton = (Button) findViewById(R.id.login_email_sign_in_button);
+        mPasswordView = findViewById(R.id.login_password_input);
+        mEmailSignInButton = findViewById(R.id.login_email_sign_in_button);
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
