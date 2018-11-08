@@ -19,12 +19,15 @@ import edu.gatech.donatracker.model.user.User;
 
 public class HomeActivity extends AppCompatActivity {
 
+    public static final String WELCOME = "Welcome!";
+    // DEBUG
+    private final String TAG = "HomeActivity.class";
+    // Exit application when click BACK button
+    boolean isBackButtonClicked = false;
     // UI references
     private Button log_out_button;
     private TextView greeting_textView;
     private Button view_location_list_button;
-    public static final String WELCOME = "Welcome!";
-
     // User credentials
     private FirebaseAuth mAuth;
     private FirebaseUser firebaseUser;
@@ -32,12 +35,6 @@ public class HomeActivity extends AppCompatActivity {
     private FirebaseFirestore database;
     private DocumentReference userDocRef;
     private User user;
-
-    // Exit application when click BACK button
-    boolean isBackButtonClicked = false;
-
-    // DEBUG
-    private final String TAG = "HomeActivity.class";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

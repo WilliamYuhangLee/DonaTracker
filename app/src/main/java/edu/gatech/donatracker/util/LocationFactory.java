@@ -1,7 +1,6 @@
 package edu.gatech.donatracker.util;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -9,11 +8,10 @@ import edu.gatech.donatracker.model.Location;
 
 /**
  * Created by Yuhang Li on 2018/10/11
- *
+ * <p>
  * A factory class that has a static method parseLocations() that returns a List of
  * Locations when passed in a List<String[]> that is returned from the CSVFile class's
  * read() method.
- *
  */
 public class LocationFactory {
 
@@ -27,6 +25,19 @@ public class LocationFactory {
         locations = new ArrayList<>();
         init();
         manufactureLocations();
+    }
+
+    /**
+     * The only public method of this class.
+     * Take a List<String[]> that is generated from the CSVFile class's read()
+     * method, and return a List of Locations with the list's elements as parameters.
+     *
+     * @param rawList a List of String[] generated from a CSF file through the CSVFile class
+     * @return a List of Locations
+     */
+    public static List<Location> parseLocations(List<String[]> rawList) {
+        LocationFactory locationFactory = new LocationFactory(rawList);
+        return locationFactory.locations;
     }
 
     private void init() {
@@ -52,18 +63,5 @@ public class LocationFactory {
             location.setWebsite(args[indices.get("Website")]);
             locations.add(location);
         }
-    }
-
-    /**
-     * The only public method of this class.
-     * Take a List<String[]> that is generated from the CSVFile class's read()
-     * method, and return a List of Locations with the list's elements as parameters.
-     *
-     * @param rawList a List of String[] generated from a CSF file through the CSVFile class
-     * @return a List of Locations
-     */
-    public static List<Location> parseLocations(List<String[]> rawList) {
-        LocationFactory locationFactory = new LocationFactory(rawList);
-        return locationFactory.locations;
     }
 }

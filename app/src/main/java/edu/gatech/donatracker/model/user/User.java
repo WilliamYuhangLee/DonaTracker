@@ -8,48 +8,23 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.Nullable;
-
 public class User implements Parcelable, Serializable {
 
-    private static final String TAG = User.class.getSimpleName();
+    // this is used to regenerate your object. All Parcelables must have a CREATOR that implements these two methods
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     // CLASS
-
-    public enum UserType implements Serializable {
-        DEVELOPER("Developer"),
-        ADMINISTRATOR("Administrator"),
-        MANAGER("Manager"),
-        LOCATION_EMPLOYEE("Location Employee"),
-        REGULAR_USER("Regular User");
-
-        private String representation;
-
-        UserType(String representation) {
-            this.representation = representation;
-        }
-
-        @Override
-        public String toString() {
-            return representation;
-        }
-
-        public static UserType fromString(String string) {
-            for (UserType userType : UserType.values()) {
-                if (userType.representation.equalsIgnoreCase(string)) {
-                    return userType;
-                }
-            }
-            throw new IllegalArgumentException("No matching UserType!");
-        }
-
-        public static UserType[] legalValues() {
-            return new UserType[]{ADMINISTRATOR, MANAGER, LOCATION_EMPLOYEE, REGULAR_USER};
-        }
-    }
+    private static final String TAG = User.class.getSimpleName();
 
     // INSTANCE
-
     // Instance variables
     protected String UID;
     protected UserType userType;
@@ -78,18 +53,6 @@ public class User implements Parcelable, Serializable {
     // Database handlers
 
     /**
-     * Wrap this User instance into a JSON-like HashMap for the use of databases
-     *
-     * @return a HashMap with field variables as String keys and their values as Object values
-     */
-    public HashMap<String, Object> wrapData() {
-        HashMap<String, Object> data = new HashMap<>();
-        data.put("UID", UID);
-        data.put("userType", userType.toString());
-        return data;
-    }
-
-    /**
      * Manufacture a User instance from a HashMap passed from a database
      *
      * @param data a HashMap of <field, value> pairs
@@ -99,15 +62,32 @@ public class User implements Parcelable, Serializable {
         String UID = (String) data.get("UID");
         UserType userType = UserType.fromString((String) data.get("userType"));
         switch (userType) {
-            case DEVELOPER: return new Developer(UID);
-            case ADMINISTRATOR: return new Administrator(UID);
-            case MANAGER: return new Manager(UID);
-            case LOCATION_EMPLOYEE: return new LocationEmployee(UID);
-            case REGULAR_USER: return new User(UID);
+            case DEVELOPER:
+                return new Developer(UID);
+            case ADMINISTRATOR:
+                return new Administrator(UID);
+            case MANAGER:
+                return new Manager(UID);
+            case LOCATION_EMPLOYEE:
+                return new LocationEmployee(UID);
+            case REGULAR_USER:
+                return new User(UID);
             default:
                 Log.e(TAG, "Illegal User type instantiation!");
                 return new User(UID);
         }
+    }
+
+    /**
+     * Wrap this User instance into a JSON-like HashMap for the use of databases
+     *
+     * @return a HashMap with field variables as String keys and their values as Object values
+     */
+    public HashMap<String, Object> wrapData() {
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("UID", UID);
+        data.put("userType", userType.toString());
+        return data;
     }
 
     // Implements Parcelable
@@ -122,17 +102,6 @@ public class User implements Parcelable, Serializable {
         dest.writeString(UID);
         dest.writeSerializable(userType);
     }
-
-    // this is used to regenerate your object. All Parcelables must have a CREATOR that implements these two methods
-    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
-        public User createFromParcel(Parcel in) {
-            return new User(in);
-        }
-
-        public User[] newArray(int size) {
-            return new User[size];
-        }
-    };
 
     // String Representation
     public String toString() {
@@ -174,5 +143,37 @@ public class User implements Parcelable, Serializable {
 
     public void setLocked(boolean locked) {
         isLocked = locked;
+    }
+
+    public enum UserType implements Serializable {
+        DEVELOPER("Developer"),
+        ADMINISTRATOR("Administrator"),
+        MANAGER("Manager"),
+        LOCATION_EMPLOYEE("Location Employee"),
+        REGULAR_USER("Regular User");
+
+        private String representation;
+
+        UserType(String representation) {
+            this.representation = representation;
+        }
+
+        public static UserType fromString(String string) {
+            for (UserType userType : UserType.values()) {
+                if (userType.representation.equalsIgnoreCase(string)) {
+                    return userType;
+                }
+            }
+            throw new IllegalArgumentException("No matching UserType!");
+        }
+
+        public static UserType[] legalValues() {
+            return new UserType[]{ADMINISTRATOR, MANAGER, LOCATION_EMPLOYEE, REGULAR_USER};
+        }
+
+        @Override
+        public String toString() {
+            return representation;
+        }
     }
 }

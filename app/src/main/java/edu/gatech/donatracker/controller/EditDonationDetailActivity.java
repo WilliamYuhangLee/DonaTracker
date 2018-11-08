@@ -1,7 +1,7 @@
 package edu.gatech.donatracker.controller;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -12,7 +12,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import edu.gatech.donatracker.R;
 import edu.gatech.donatracker.model.Donation;
 import edu.gatech.donatracker.model.Location;
-import edu.gatech.donatracker.model.Model;
 
 public class EditDonationDetailActivity extends AppCompatActivity {
     /* ************************
@@ -24,6 +23,7 @@ public class EditDonationDetailActivity extends AppCompatActivity {
     private EditText editTextFullDescription;
     private EditText editTextValueInUSD;
     private EditText editTextComment;
+    private EditText editTextCategory;
 
     private Donation currentDonation;
     private Location currentLocation;
@@ -42,6 +42,7 @@ public class EditDonationDetailActivity extends AppCompatActivity {
         editTextFullDescription = findViewById(R.id.edit_full_description);
         editTextValueInUSD = findViewById(R.id.edit_value_in_usd);
         editTextComment = findViewById(R.id.edit_comment);
+        editTextCategory = findViewById(R.id.edit_category);
 
         /*
            If a student has been passed in, this was an edit, if not, this is a new add
@@ -55,6 +56,7 @@ public class EditDonationDetailActivity extends AppCompatActivity {
             editTextValueInUSD.setText(String.format(getResources().getConfiguration().getLocales().get(0), "%,.2f",
                     currentDonation.getValueInUSD()));
             editTextComment.setText(currentDonation.getComments());
+            editTextCategory.setText(currentDonation.getCategory() == null ? "": currentDonation.getCategory());
             editing = true;
         } else {
             currentDonation = new Donation(currentLocation.getKey());
@@ -64,6 +66,7 @@ public class EditDonationDetailActivity extends AppCompatActivity {
 
     /**
      * Button handler for the add/edit donation button
+     *
      * @param view the button
      */
     public void onClickSaveDonation(View view) {
@@ -73,8 +76,9 @@ public class EditDonationDetailActivity extends AppCompatActivity {
         currentDonation.setFullDescription(editTextFullDescription.getText().toString());
         currentDonation.setValueInUSD(Double.parseDouble(editTextValueInUSD.getText().toString()));
         currentDonation.setComments(editTextComment.getText().toString());
+        currentDonation.setCategory(editTextCategory.getText().toString());
 
-        Log.d("Edit", (editing ? "Edit": "Add") + " donation data: " + currentDonation.toString());
+        Log.d("Edit", (editing ? "Edit" : "Add") + " donation data: " + currentDonation.toString());
 
         DocumentReference donationRef = FirebaseFirestore.getInstance().collection("donations").document(currentDonation
                 .getUuid());

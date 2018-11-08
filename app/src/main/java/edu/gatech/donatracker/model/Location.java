@@ -9,11 +9,21 @@ import java.util.List;
 
 /**
  * Created by Yuhang Li on 2018/09/28
- *
+ * <p>
  * POJO for a location, holds information about this location.
  */
 public class Location implements Parcelable {
 
+    // this is used to regenerate your object. All Parcelables must have a CREATOR that implements these two methods
+    public static final Parcelable.Creator<Location> CREATOR = new Parcelable.Creator<Location>() {
+        public Location createFromParcel(Parcel in) {
+            return new Location(in);
+        }
+
+        public Location[] newArray(int size) {
+            return new Location[size];
+        }
+    };
     // Instance variables
     private int key;
     private String name;
@@ -27,16 +37,16 @@ public class Location implements Parcelable {
     private String city;
     private String state;
     private int zip;
-    private String website;
 
     // Constructors
+    private String website;
 
     public Location() {
         employees = new ArrayList<>();
         inventory = new ArrayList<>();
     }
 
-    private Location (Parcel in) {
+    private Location(Parcel in) {
         key = in.readInt();
         name = in.readString();
         type = in.readString();
@@ -53,6 +63,8 @@ public class Location implements Parcelable {
         zip = in.readInt();
         website = in.readString();
     }
+
+    // Database Handlers
 
     private Location(int key, String name, String type, List<String> employees, List<String> inventory,
                      double longitude, double latitude, String address, String phone, String city, String state, int zip, String website) {
@@ -71,7 +83,17 @@ public class Location implements Parcelable {
         this.website = website;
     }
 
-    // Database Handlers
+    public static Location unwrapData(HashMap<String, Object> data) {
+        return new Location((int) data.get("key"), (String) data.get("name"), (String) data.get("type"),
+                (List<String>) data
+                        .get("employees"), (List<String>) data.get
+                ("inventory"), (double) data.get("longitude"), (double) data.get("latitude"), (String) data.get
+                ("address"), (String) data.get("phone"),
+                (String) data.get("city"), (String) data.get("state"), (int) data.get("zip"), (String) data.get
+                ("website"));
+    }
+
+    // Data Management
 
     public HashMap<String, Object> wrapData() {
         HashMap<String, Object> data = new HashMap<>();
@@ -90,18 +112,6 @@ public class Location implements Parcelable {
         data.put("website", website);
         return data;
     }
-
-    public static Location unwrapData(HashMap<String, Object> data) {
-        return new Location((int) data.get("key"), (String) data.get("name"), (String) data.get("type"),
-                (List<String>) data
-                .get("employees"), (List<String>) data.get
-                ("inventory"), (double) data.get("longitude"), (double) data.get("latitude"), (String) data.get
-                ("address"), (String) data.get("phone"),
-                (String) data.get("city"), (String) data.get("state"), (int) data.get("zip"), (String) data.get
-                ("website"));
-    }
-
-    // Data Management
 
     public boolean addEmployee(String employee) {
         return employees.add(employee);
@@ -131,19 +141,18 @@ public class Location implements Parcelable {
         return inventory.remove(donation);
     }
 
+    //Getters and Setters
+
     public List<String> viewInventory() {
         return new ArrayList<>(inventory);
     }
 
-    //Getters and Setters
-
+    public int getKey() {
+        return key;
+    }
 
     public void setKey(int key) {
         this.key = key;
-    }
-
-    public int getKey() {
-        return key;
     }
 
     public String getName() {
@@ -268,15 +277,4 @@ public class Location implements Parcelable {
         dest.writeInt(zip);
         dest.writeString(website);
     }
-
-    // this is used to regenerate your object. All Parcelables must have a CREATOR that implements these two methods
-    public static final Parcelable.Creator<Location> CREATOR = new Parcelable.Creator<Location>() {
-        public Location createFromParcel(Parcel in) {
-            return new Location(in);
-        }
-
-        public Location[] newArray(int size) {
-            return new Location[size];
-        }
-    };
 }

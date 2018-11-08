@@ -19,7 +19,7 @@ import java.util.function.Function;
 
 /**
  * Created by Yuhang Li on 2018/10/29
- *
+ * <p>
  * Handles all operations on Firebase
  */
 public class FirebaseManager {
@@ -256,7 +256,7 @@ public class FirebaseManager {
 
     public static <T> void updateObjects(Activity activity, Function<Map<String, Object>, T> unwrapper, List<T>
             listToUpdate, UpdateHandler
-            handler, CollectionReference colRef) {
+                                                 handler, CollectionReference colRef) {
         colRef.addSnapshotListener(activity, (queryDocumentSnapshots, e) -> {
             if (e != null) {
                 Log.e(activity.getClass().getSimpleName(), String.format("Collection [%s] update failed!", colRef.getId()), e);
@@ -449,8 +449,8 @@ public class FirebaseManager {
                     Log.d(activity.getClass().getSimpleName(), String.format("%s[%s].%s update successful.",
                             docRef.getParent().getId(), docRef.getId(), arrayFieldName));
                 }).addOnFailureListener(activity, e -> {
-                    Log.e(activity.getClass().getSimpleName(), String.format("%s[%s].%s update failed!",
-                            docRef.getParent().getId(), docRef.getId(), arrayFieldName), e);
+            Log.e(activity.getClass().getSimpleName(), String.format("%s[%s].%s update failed!",
+                    docRef.getParent().getId(), docRef.getId(), arrayFieldName), e);
         });
     }
 
@@ -461,8 +461,8 @@ public class FirebaseManager {
                     Log.d(activity.getClass().getSimpleName(), String.format("%s[%s].%s update successful.",
                             docRef.getParent().getId(), docRef.getId(), arrayFieldName));
                 }).addOnFailureListener(activity, e -> {
-                    Log.e(activity.getClass().getSimpleName(), String.format("%s[%s].%s update failed!",
-                            docRef.getParent().getId(), docRef.getId(), arrayFieldName), e);
+            Log.e(activity.getClass().getSimpleName(), String.format("%s[%s].%s update failed!",
+                    docRef.getParent().getId(), docRef.getId(), arrayFieldName), e);
         });
     }
 

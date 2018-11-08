@@ -5,12 +5,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by Yuhang Li on 2018/10/11
- *
+ * <p>
  * A utility class that parses a CSV file into a list of its rows.
  */
 public class CSVFile {
@@ -19,9 +18,9 @@ public class CSVFile {
 
     /**
      * Constructor.
-     *
+     * <p>
      * Refer to the following lines for usage of this class:
-     *
+     * <p>
      * InputStream inputStream = getResources().openRawResource(R.raw.CSV_FILE_NAME);
      * CSVFile csvFile = new CSVFile(inputStream);
      * List<String[]> list = csvFile.read();

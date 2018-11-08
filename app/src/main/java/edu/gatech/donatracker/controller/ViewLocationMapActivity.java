@@ -1,7 +1,7 @@
 package edu.gatech.donatracker.controller;
 
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -10,12 +10,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-
 import edu.gatech.donatracker.R;
 
 /**
  * Created by Qiusen Huang on 2018/11/02
- *
+ * <p>
  * Displays on Google Map the Location
  */
 public class ViewLocationMapActivity extends FragmentActivity implements OnMapReadyCallback {

@@ -3,13 +3,15 @@ package edu.gatech.donatracker.controller;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -19,29 +21,32 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import edu.gatech.donatracker.R;
 import edu.gatech.donatracker.model.Donation;
 import edu.gatech.donatracker.model.Location;
 import edu.gatech.donatracker.model.user.User;
 
-public class ViewDonationsActivity extends AppCompatActivity{
+public class ViewDonationsActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     public static final String TAG = "ViewDonationsActivity.class";
-
+    SimpleDonationRecyclerViewAdapter recyclerViewAdapter;
     // Models
     private Location currentLocation;
     private DocumentReference locationRef;
     private List<String> donationIDList;
     private List<Donation> donationList;
     private CollectionReference donationsRef;
-
     private FirebaseUser firebaseUser;
     private User user;
 
+    //for searching
+    private SearchView editsearch;
+    private List<Donation> unmodifiedDonationList;
+    private boolean searchByName;
     // UI References
     private RecyclerView recyclerView;
-    SimpleDonationRecyclerViewAdapter recyclerViewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,11 +58,17 @@ public class ViewDonationsActivity extends AppCompatActivity{
         donationIDList = currentLocation.viewInventory();
         user = getIntent().getParcelableExtra("User Model");
         donationList = new ArrayList<>();
+        unmodifiedDonationList = new ArrayList<>();
+        searchByName = true;
         locationRef = FirebaseFirestore.getInstance().collection("locations").document(Integer.toString
                 (currentLocation.getKey()));
 
         // Initiate UI References
         recyclerView = findViewById(R.id.recycler_view_view_donations_donations);
+
+        // Initiate where to find search and set query listener
+        editsearch = (SearchView) findViewById(R.id.search);
+        editsearch.setOnQueryTextListener(this);
 
         // Set up adapters
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -67,7 +78,6 @@ public class ViewDonationsActivity extends AppCompatActivity{
         locationRef.get().addOnSuccessListener(documentSnapshot -> {
             donationIDList = (List<String>) documentSnapshot.getData().get("inventory");
             Log.d(TAG, "Donation ID list fetch successful!");
-            updateDonations();
         }).addOnFailureListener(e -> {
             Log.w(TAG, "Donation ID list fetch failed!", e);
         });
@@ -75,10 +85,12 @@ public class ViewDonationsActivity extends AppCompatActivity{
 
     private void updateDonations() {
         donationList.clear();
+        unmodifiedDonationList.clear();
         for (String donationID : donationIDList) {
             DocumentReference donationRef = FirebaseFirestore.getInstance().collection("donations").document(donationID);
             donationRef.get().addOnSuccessListener(documentSnapshot -> {
                 donationList.add(documentSnapshot.toObject(Donation.class));
+                unmodifiedDonationList.add(documentSnapshot.toObject(Donation.class));
                 Log.d(TAG, "Donation[" + donationID + "] fetch successful!");
                 recyclerViewAdapter.notifyDataSetChanged();
             }).addOnFailureListener(e -> {
@@ -109,6 +121,30 @@ public class ViewDonationsActivity extends AppCompatActivity{
         startActivity(intent);
     }
 
+    public void onClickOptions(View view) {
+        searchByName = !searchByName;
+        if (searchByName) {
+            ((SearchView) findViewById(R.id.search)).setQueryHint("Search by name");
+        } else {
+            ((SearchView) findViewById(R.id.search)).setQueryHint("Search by category");
+        }
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        if (searchByName) {
+            recyclerViewAdapter.filterByShortDesc(newText);
+        } else {
+            recyclerViewAdapter.filterByCategory(newText);
+        }
+        return false;
+    }
+
     // RecyclerViewAdapter inner class
     private class SimpleDonationRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleDonationRecyclerViewAdapter.ViewHolder> {
@@ -116,7 +152,7 @@ public class ViewDonationsActivity extends AppCompatActivity{
         /**
          * Collection of the items to be shown in this list.
          */
-        private final List<Donation> myDonations;
+        private List<Donation> myDonations;
 
         /**
          * set the items to be used by the adapter
@@ -125,6 +161,35 @@ public class ViewDonationsActivity extends AppCompatActivity{
          */
         SimpleDonationRecyclerViewAdapter(List<Donation> items) {
             myDonations = items;
+        }
+
+        private void filterByCategory(String pattern) {
+            pattern = pattern.toLowerCase(Locale.getDefault());
+            myDonations.clear();
+            if (pattern.length() == 0) {
+                myDonations.addAll(unmodifiedDonationList);
+            } else {
+                for (Donation donation : unmodifiedDonationList) {
+                    if (donation.getCategory() != null && donation.getCategory().toLowerCase(Locale.getDefault()).contains(pattern)) {
+                        myDonations.add(donation);
+                    }
+                }
+            }
+            notifyDataSetChanged();
+        }
+        private void filterByShortDesc(String pattern) {
+            pattern = pattern.toLowerCase(Locale.getDefault());
+            myDonations.clear();
+            if (pattern.length() == 0) {
+                myDonations.addAll(unmodifiedDonationList);
+            } else {
+                for (Donation donation : unmodifiedDonationList) {
+                    if (donation.getShortDescription().toLowerCase(Locale.getDefault()).contains(pattern)) {
+                        myDonations.add(donation);
+                    }
+                }
+            }
+            notifyDataSetChanged();
         }
 
         @Override
@@ -153,7 +218,9 @@ public class ViewDonationsActivity extends AppCompatActivity{
               Now we bind the data to the widgets.  In this case, pretty simple, put the id in one
               textview and the string rep of a course in the other.
              */
-            holder.mContentView.setText(myDonations.get(position).getShortDescription());
+            holder.mContentView.setText(String.format("Name: %s  Category: %s",
+                    myDonations.get(position).getShortDescription(),
+                    myDonations.get(position).getCategory()));
 
             /*
              * set up a listener to handle if the user clicks on this list item, what should happen?

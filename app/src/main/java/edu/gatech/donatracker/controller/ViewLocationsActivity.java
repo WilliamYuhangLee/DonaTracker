@@ -2,11 +2,11 @@ package edu.gatech.donatracker.controller;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,18 +38,16 @@ import edu.gatech.donatracker.util.LocationFactory;
 public class ViewLocationsActivity extends AppCompatActivity {
 
     public static final String TAG = ViewLocationsActivity.class.getSimpleName();
-
+    SimpleLocationRecyclerViewAdapter recyclerViewAdapter;
     // Models
     private User user;
     private List<Location> locationList;
     private FirebaseFirestore database;
     private CollectionReference locationsRef;
-
     // UI References
     private RecyclerView recyclerView;
     private Button import_locations_button;
     private Button add_location_button;
-    SimpleLocationRecyclerViewAdapter recyclerViewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -203,6 +201,7 @@ public class ViewLocationsActivity extends AppCompatActivity {
             }
         }
     }
+
     public class RecyclerViewAdapterUpdateHandler implements UpdateHandler {
 
         private SimpleLocationRecyclerViewAdapter adapter;

@@ -9,27 +9,21 @@ import edu.gatech.donatracker.model.user.User;
 
 /**
  * Created by Yuhang Li on 2018/09/28
- *
+ * <p>
  * This is our facade to the Model.
  * We use a singleton design pattern to provide access to the model from each
  * controller.
- *
  */
 public class Model {
 
     // Singleton instance
     private static final Model instance = new Model();
-    public static Model getModel() {return instance;}
-
     // Hold a Map of UIDs to users
     private Map<String, User> users;
-
     // Hold the list of all Locations
     private List<Location> locations;
-
     // Hold current Location
     private Location currentLocation;
-
     // Hold current donation, TODO change this to paresal
     private Donation currentDonation;
 
@@ -43,6 +37,10 @@ public class Model {
         loadDummyLocations();
     }
 
+    public static Model getModel() {
+        return instance;
+    }
+
     // Populate the model with dummy users. Delete when app finished
     private void loadDummyUsers() {
 
@@ -53,13 +51,13 @@ public class Model {
 
     }
 
+    public Location getCurrentLocation() {
+        return currentLocation;
+    }
+
     // Getters and Setters
     public void setCurrentLocation(Location in) {
         currentLocation = in;
-    }
-
-    public Location getCurrentLocation() {
-        return currentLocation;
     }
 
     public Donation getCurrentDonation() {
@@ -82,6 +80,7 @@ public class Model {
 
     /**
      * Remove a user from the users list.
+     *
      * @param UID of the user to be removed
      * @return the User removed or null if there exists no such user
      */
@@ -91,6 +90,7 @@ public class Model {
 
     /**
      * Remove a user from the users list.
+     *
      * @param user to be removed
      * @return the User removed or null if there exists no such user
      */
@@ -100,6 +100,7 @@ public class Model {
 
     /**
      * Get the user with the given UID.
+     *
      * @param UID of the user to be retrieved
      * @return the User or null if the User does not exist
      */
@@ -139,6 +140,7 @@ public class Model {
 
     /**
      * Remove a location from the users list.
+     *
      * @param location to be removed
      * @return true if removed, false if there is no such location
      */

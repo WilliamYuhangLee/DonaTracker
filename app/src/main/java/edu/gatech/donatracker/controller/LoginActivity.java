@@ -27,17 +27,15 @@ import edu.gatech.donatracker.R;
 public class LoginActivity extends AppCompatActivity {
 
     private final String TAG = "LoginActivity.class";
+    Button mEmailSignInButton;
     private FirebaseAuth mAuth;
-
     // Keep track of the login task to ensure we can cancel it if requested.
     private UserLoginTask mAuthTask = null;
-
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    Button mEmailSignInButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,20 +137,20 @@ public class LoginActivity extends AppCompatActivity {
         mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         mLoginFormView.animate().setDuration(shortAnimTime).alpha(show ? 0 : 1).setListener(
                 new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            }
-        });
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+                    }
+                });
 
         mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
         mProgressView.animate().setDuration(shortAnimTime).alpha(show ? 1 : 0).setListener(
                 new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            }
-        });
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                    }
+                });
     }
 
     public void onClickCancel(View view) {

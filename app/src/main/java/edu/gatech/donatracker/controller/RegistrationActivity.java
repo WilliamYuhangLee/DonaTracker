@@ -16,7 +16,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import edu.gatech.donatracker.R;
-import edu.gatech.donatracker.model.Model;
 import edu.gatech.donatracker.model.user.User;
 
 public class RegistrationActivity extends AppCompatActivity {
@@ -66,9 +65,9 @@ public class RegistrationActivity extends AppCompatActivity {
                         user = new User(UID, (User.UserType) mAccountTypeSpinner.getSelectedItem());
 //                        Model.getModel().addUser(user, UID);
                         database.collection("users").document(UID).set(user.wrapData())
-                        .addOnSuccessListener((v) -> {
-                            Log.d(TAG, "User has been created and stored!");
-                        }).addOnFailureListener((v) -> {
+                                .addOnSuccessListener((v) -> {
+                                    Log.d(TAG, "User has been created and stored!");
+                                }).addOnFailureListener((v) -> {
                             Log.d(TAG, "User creation failed!");
                         });
 

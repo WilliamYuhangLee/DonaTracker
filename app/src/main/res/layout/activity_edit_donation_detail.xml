@@ -141,6 +141,27 @@
         android:onClick="onClickSaveDonation"
         android:text="Save" />
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="Category"
+        android:ems="10"
+        android:id="@+id/edit_category"
+        android:layout_below="@+id/textViewCategory"
+        android:layout_alignParentStart="true"
+        android:autofillHints="Category" />
+
+    <TextView
+        android:text="Category:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewCategory"
+        android:layout_below="@+id/edit_comment"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="11dp" />
+
+
     <!--<TextView-->
         <!--android:id="@+id/textView3"-->
         <!--android:layout_width="wrap_content"-->
