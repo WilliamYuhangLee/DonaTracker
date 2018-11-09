@@ -67,7 +67,7 @@ public class ViewDonationsActivity extends AppCompatActivity implements SearchVi
         recyclerView = findViewById(R.id.recycler_view_view_donations_donations);
 
         // Initiate where to find search and set query listener
-        editsearch = (SearchView) findViewById(R.id.search);
+        editsearch = findViewById(R.id.search);
         editsearch.setOnQueryTextListener(this);
 
         // Set up adapters
