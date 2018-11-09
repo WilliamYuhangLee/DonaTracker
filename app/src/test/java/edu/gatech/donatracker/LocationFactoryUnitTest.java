@@ -54,6 +54,6 @@ public class LocationFactoryUnitTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void listNullTest() {
-        List<Location> list = LocationFactory.parseLocations(rawListNULL);
+        LocationFactory.parseLocations(rawListNULL);
     }
 }
