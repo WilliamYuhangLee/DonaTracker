@@ -40,6 +40,16 @@ public class LocationFactoryUnitTest {
     public void listNotNullTest() {
         List<Location> list = LocationFactory.parseLocations(rawListNOTNULL);
         assertEquals(list.get(0).getKey(), Integer.parseInt(dummyData[0]));
+        assertEquals(list.get(0).getName(), dummyData[1]);
+        assertEquals(list.get(0).getLatitude(), Double.parseDouble(dummyData[2]), 0);
+        assertEquals(list.get(0).getLongitude(), Double.parseDouble(dummyData[3]), 0);
+        assertEquals(list.get(0).getAddress(), dummyData[4]);
+        assertEquals(list.get(0).getCity(), dummyData[5]);
+        assertEquals(list.get(0).getState(), dummyData[6]);
+        assertEquals(list.get(0).getZip(), Integer.parseInt(dummyData[7]));
+        assertEquals(list.get(0).getType(), dummyData[8]);
+        assertEquals(list.get(0).getPhone(), dummyData[9]);
+        assertEquals(list.get(0).getWebsite(), dummyData[10]);
     }
 
     @Test(expected = IllegalArgumentException.class)
