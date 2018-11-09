@@ -1,5 +1,7 @@
 package edu.gatech.donatracker.util;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,11 +22,16 @@ public class LocationFactory {
     private List<Location> locations;
 
     private LocationFactory(List<String[]> rawList) {
-        this.rawList = rawList;
-        this.indices = new HashMap<>();
-        locations = new ArrayList<>();
-        init();
-        manufactureLocations();
+        if (rawList == null) {
+            Log.e("Error", "Location Factory cannot take an empty list");
+            throw new IllegalArgumentException("raw list cannot be null");
+        } else {
+            this.rawList = rawList;
+            this.indices = new HashMap<>();
+            locations = new ArrayList<>();
+            init();
+            manufactureLocations();
+        }
     }
 
     /**
