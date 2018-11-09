@@ -109,7 +109,7 @@ public class ViewLocationDetailsActivity extends AppCompatActivity {
     public void onClickViewMap(View view) {
         Intent intent = new Intent(ViewLocationDetailsActivity.this, ViewLocationMapActivity.class);
         intent.putExtra("Lng", currentLocation.getLongitude());
-        intent.putExtra("Lat", currentLocation.getLongitude());
+        intent.putExtra("Lat", currentLocation.getLatitude());
         intent.putExtra("Name", currentLocation.getName());
         intent.putExtra("TEL", currentLocation.getPhone());
         startActivity(intent);
