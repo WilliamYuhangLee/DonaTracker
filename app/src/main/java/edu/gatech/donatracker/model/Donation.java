@@ -14,6 +14,7 @@ import java.util.UUID;
  */
 public class Donation implements Parcelable {
 
+
     public static final Parcelable.Creator<Donation> CREATOR
             = new Parcelable.Creator<Donation>() {
         public Donation createFromParcel(Parcel in) {

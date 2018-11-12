@@ -7,6 +7,7 @@
     tools:context=".controller.RegistrationActivity">
 
     <EditText
+        android:hint="@string/email_hint"
         android:id="@+id/editText_registration_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -32,6 +33,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
+        android:hint="@string/password_hint"
         android:id="@+id/editText_registration_password"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
