@@ -15,9 +15,9 @@ import edu.gatech.donatracker.model.Location;
  */
 public class LocationFactory {
 
-    private List<String[]> rawList;
-    private HashMap<String, Integer> indices;
-    private List<Location> locations;
+    private final List<String[]> rawList;
+    private final HashMap<String, Integer> indices;
+    private final List<Location> locations;
 
     private LocationFactory(List<String[]> rawList) {
         this.rawList = rawList;

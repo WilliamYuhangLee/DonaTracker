@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -37,17 +38,13 @@ import edu.gatech.donatracker.util.LocationFactory;
  */
 public class ViewLocationsActivity extends AppCompatActivity {
 
-    public static final String TAG = ViewLocationsActivity.class.getSimpleName();
-    SimpleLocationRecyclerViewAdapter recyclerViewAdapter;
+    private static final String TAG = ViewLocationsActivity.class.getSimpleName();
+    private SimpleLocationRecyclerViewAdapter recyclerViewAdapter;
     // Models
     private User user;
     private List<Location> locationList;
     private FirebaseFirestore database;
     private CollectionReference locationsRef;
-    // UI References
-    private RecyclerView recyclerView;
-    private Button import_locations_button;
-    private Button add_location_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +58,10 @@ public class ViewLocationsActivity extends AppCompatActivity {
         locationList = new ArrayList<>();
 
         // Initiate UI References
-        recyclerView = findViewById(R.id.recycler_view_view_locations_locations);
-        import_locations_button = findViewById(R.id.button_view_locations_import_locations);
-        add_location_button = findViewById(R.id.button_view_locations_add_location);
+        // UI References
+        RecyclerView recyclerView = findViewById(R.id.recycler_view_view_locations_locations);
+        Button import_locations_button = findViewById(R.id.button_view_locations_import_locations);
+        Button add_location_button = findViewById(R.id.button_view_locations_add_location);
 
         // Set up adapters
 
@@ -101,11 +99,7 @@ public class ViewLocationsActivity extends AppCompatActivity {
             DocumentReference docRef = database.collection("locations").document(Integer.toString(location.getKey()));
             batch.set(docRef, location.wrapData());
         }
-        batch.commit().addOnSuccessListener(v -> {
-            Log.d(TAG, "Locations upload successful!");
-        }).addOnFailureListener(e -> {
-            Log.e(TAG, "Locations upload failed!", e);
-        });
+        batch.commit().addOnSuccessListener(v -> Log.d(TAG, "Locations upload successful!")).addOnFailureListener(e -> Log.e(TAG, "Locations upload failed!", e));
         recyclerViewAdapter.notifyDataSetChanged();
     }
 
@@ -127,6 +121,7 @@ public class ViewLocationsActivity extends AppCompatActivity {
             myLocations = items;
         }
 
+        @NonNull
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             /*
@@ -158,19 +153,16 @@ public class ViewLocationsActivity extends AppCompatActivity {
             /*
              * set up a listener to handle if the user clicks on this list item, what should happen?
              */
-            holder.mView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //on a phone, we need to change windows to the detail view
-                    Context context = v.getContext();
-                    //create our new intent with the new screen (activity)
-                    Intent intent = new Intent(context, ViewLocationDetailsActivity.class);
-                    //pass along the id of the course so we can retrieve the correct data in the next window
-                    intent.putExtra("Location Passed", holder.myLocation);
-                    intent.putExtra("User Model", (Parcelable) user);
-                    //now just display the new window
-                    context.startActivity(intent);
-                }
+            holder.mView.setOnClickListener(v -> {
+                //on a phone, we need to change windows to the detail view
+                Context context = v.getContext();
+                //create our new intent with the new screen (activity)
+                Intent intent = new Intent(context, ViewLocationDetailsActivity.class);
+                //pass along the id of the course so we can retrieve the correct data in the next window
+                intent.putExtra("Location Passed", holder.myLocation);
+                intent.putExtra("User Model", (Parcelable) user);
+                //now just display the new window
+                context.startActivity(intent);
             });
         }
 
@@ -204,9 +196,9 @@ public class ViewLocationsActivity extends AppCompatActivity {
 
     public class RecyclerViewAdapterUpdateHandler implements UpdateHandler {
 
-        private SimpleLocationRecyclerViewAdapter adapter;
+        private final SimpleLocationRecyclerViewAdapter adapter;
 
-        public RecyclerViewAdapterUpdateHandler(SimpleLocationRecyclerViewAdapter adapter) {
+        RecyclerViewAdapterUpdateHandler(SimpleLocationRecyclerViewAdapter adapter) {
             this.adapter = adapter;
         }
 

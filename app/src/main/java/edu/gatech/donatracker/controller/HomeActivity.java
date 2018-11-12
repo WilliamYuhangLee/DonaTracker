@@ -13,26 +13,23 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Objects;
+
 import edu.gatech.donatracker.R;
 import edu.gatech.donatracker.database.FirebaseManager;
 import edu.gatech.donatracker.model.user.User;
 
 public class HomeActivity extends AppCompatActivity {
 
-    public static final String WELCOME = "Welcome!";
+    private static final String WELCOME = "Welcome!";
     // DEBUG
     private final String TAG = "HomeActivity.class";
     // Exit application when click BACK button
-    boolean isBackButtonClicked = false;
-    // UI references
-    private Button log_out_button;
+    private boolean isBackButtonClicked = false;
     private TextView greeting_textView;
-    private Button view_location_list_button;
     // User credentials
     private FirebaseAuth mAuth;
     private FirebaseUser firebaseUser;
-    private String UID;
-    private FirebaseFirestore database;
     private DocumentReference userDocRef;
     private User user;
 
@@ -42,16 +39,17 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         // Initialize UI references
-        log_out_button = findViewById(R.id.button_home_logout);
+        // UI references
+        Button log_out_button = findViewById(R.id.button_home_logout);
         greeting_textView = findViewById(R.id.textView_home_greeting);
         greeting_textView.setText(WELCOME);
-        view_location_list_button = findViewById(R.id.button_home_view_location);
+        Button view_location_list_button = findViewById(R.id.button_home_view_location);
 
         // Set up models
         mAuth = FirebaseAuth.getInstance();
         firebaseUser = mAuth.getCurrentUser();
-        UID = firebaseUser.getUid();
-        database = FirebaseFirestore.getInstance();
+        String UID = Objects.requireNonNull(firebaseUser).getUid();
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
         userDocRef = database.collection("users").document(UID);
 
         // Set handlers

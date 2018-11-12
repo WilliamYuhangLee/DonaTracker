@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class CSVFile {
 
-    private InputStream inputStream;
+    private final InputStream inputStream;
 
     /**
      * Constructor.
@@ -52,12 +52,11 @@ public class CSVFile {
             }
         } catch (IOException e) {
             throw new RuntimeException("Error in reading CSV file: " + e);
-        } finally {
-            try {
-                inputStream.close();
-            } catch (IOException e) {
-                throw new RuntimeException("Error in closing input stream: " + e);
-            }
+        }
+        try {
+            inputStream.close();
+        } catch (IOException e) {
+            throw new RuntimeException("Error in closing input stream: " + e);
         }
         return result;
     }

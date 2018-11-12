@@ -3,6 +3,7 @@ package edu.gatech.donatracker.controller;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -22,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import edu.gatech.donatracker.R;
 import edu.gatech.donatracker.model.Donation;
@@ -30,8 +31,8 @@ import edu.gatech.donatracker.model.user.User;
 
 public class ViewDonationsActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
-    public static final String TAG = "ViewDonationsActivity.class";
-    SimpleDonationRecyclerViewAdapter recyclerViewAdapter;
+    private static final String TAG = "ViewDonationsActivity.class";
+    private SimpleDonationRecyclerViewAdapter recyclerViewAdapter;
     // Models
     private Location currentLocation;
     private DocumentReference locationRef;
@@ -39,15 +40,11 @@ public class ViewDonationsActivity extends AppCompatActivity implements SearchVi
     private List<Donation> donationList;
     private CollectionReference donationsRef;
     private FirebaseUser firebaseUser;
-    private User user;
 
-    //for searching
-    private SearchView editsearch;
     private List<Donation> unmodifiedDonationList;
     private boolean searchByName;
-    // UI References
-    private RecyclerView recyclerView;
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +53,7 @@ public class ViewDonationsActivity extends AppCompatActivity implements SearchVi
         // Initiate Models
         currentLocation = getIntent().getParcelableExtra("Current Location");
         donationIDList = currentLocation.viewInventory();
-        user = getIntent().getParcelableExtra("User Model");
+        User user = getIntent().getParcelableExtra("User Model");
         donationList = new ArrayList<>();
         unmodifiedDonationList = new ArrayList<>();
         searchByName = true;
@@ -64,10 +61,12 @@ public class ViewDonationsActivity extends AppCompatActivity implements SearchVi
                 (currentLocation.getKey()));
 
         // Initiate UI References
-        recyclerView = findViewById(R.id.recycler_view_view_donations_donations);
+        // UI References
+        RecyclerView recyclerView = findViewById(R.id.recycler_view_view_donations_donations);
 
         // Initiate where to find search and set query listener
-        editsearch = findViewById(R.id.search);
+        //for searching
+        SearchView editsearch = findViewById(R.id.search);
         editsearch.setOnQueryTextListener(this);
 
         // Set up adapters
@@ -76,11 +75,9 @@ public class ViewDonationsActivity extends AppCompatActivity implements SearchVi
         recyclerView.setAdapter(recyclerViewAdapter);
 
         locationRef.get().addOnSuccessListener(documentSnapshot -> {
-            donationIDList = (List<String>) documentSnapshot.getData().get("inventory");
+            donationIDList = (List<String>) Objects.requireNonNull(documentSnapshot.getData()).get("inventory");
             Log.d(TAG, "Donation ID list fetch successful!");
-        }).addOnFailureListener(e -> {
-            Log.w(TAG, "Donation ID list fetch failed!", e);
-        });
+        }).addOnFailureListener(e -> Log.w(TAG, "Donation ID list fetch failed!", e));
     }
 
     private void updateDonations() {
@@ -93,12 +90,11 @@ public class ViewDonationsActivity extends AppCompatActivity implements SearchVi
                 unmodifiedDonationList.add(documentSnapshot.toObject(Donation.class));
                 Log.d(TAG, "Donation[" + donationID + "] fetch successful!");
                 recyclerViewAdapter.notifyDataSetChanged();
-            }).addOnFailureListener(e -> {
-                Log.w(TAG, "Donation[" + donationID + "] fetch failed!", e);
-            });
+            }).addOnFailureListener(e -> Log.w(TAG, "Donation[" + donationID + "] fetch failed!", e));
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void onStart() {
         super.onStart();
@@ -152,7 +148,7 @@ public class ViewDonationsActivity extends AppCompatActivity implements SearchVi
         /**
          * Collection of the items to be shown in this list.
          */
-        private List<Donation> myDonations;
+        private final List<Donation> myDonations;
 
         /**
          * set the items to be used by the adapter
@@ -177,6 +173,7 @@ public class ViewDonationsActivity extends AppCompatActivity implements SearchVi
             }
             notifyDataSetChanged();
         }
+
         private void filterByShortDesc(String pattern) {
             pattern = pattern.toLowerCase(Locale.getDefault());
             myDonations.clear();
@@ -192,8 +189,9 @@ public class ViewDonationsActivity extends AppCompatActivity implements SearchVi
             notifyDataSetChanged();
         }
 
+        @NonNull
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             /*
 
               This sets up the view for each individual item in the recycler display
@@ -206,7 +204,7 @@ public class ViewDonationsActivity extends AppCompatActivity implements SearchVi
         }
 
         @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
 
             /*
             This is where we have to bind each data element in the list (given by position parameter)
@@ -225,23 +223,20 @@ public class ViewDonationsActivity extends AppCompatActivity implements SearchVi
             /*
              * set up a listener to handle if the user clicks on this list item, what should happen?
              */
-            holder.mView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //on a phone, we need to change windows to the detail view
-                    Context context = v.getContext();
-                    //create our new intent with the new screen (activity)
-                    Intent intent = new Intent(context, ViewDonationDetailsActivity.class);
-                        /*
-                            pass along the id of the course so we can retrieve the correct data in
-                            the next window
-                         */
-                    intent.putExtra("Donation", holder.myDonation);
+            holder.mView.setOnClickListener(v -> {
+                //on a phone, we need to change windows to the detail view
+                Context context = v.getContext();
+                //create our new intent with the new screen (activity)
+                Intent intent = new Intent(context, ViewDonationDetailsActivity.class);
+                    /*
+                        pass along the id of the course so we can retrieve the correct data in
+                        the next window
+                     */
+                intent.putExtra("Donation", holder.myDonation);
 
-                    //now just display the new window
-                    context.startActivity(intent);
+                //now just display the new window
+                context.startActivity(intent);
 
-                }
             });
         }
 

@@ -19,7 +19,7 @@ public class Model {
     // Singleton instance
     private static final Model instance = new Model();
     // Hold a Map of UIDs to users
-    private Map<String, User> users;
+    private final Map<String, User> users;
     // Hold the list of all Locations
     private List<Location> locations;
     // Hold current Location
@@ -33,22 +33,12 @@ public class Model {
         locations = new ArrayList<>();
 
         // for debugging, delete when project is finished
-        loadDummyUsers();
-        loadDummyLocations();
+//        loadDummyUsers();
+//        loadDummyLocations();
     }
 
     public static Model getModel() {
         return instance;
-    }
-
-    // Populate the model with dummy users. Delete when app finished
-    private void loadDummyUsers() {
-
-    }
-
-    // Populate the model with dummy locations. Delete when app finished
-    private void loadDummyLocations() {
-
     }
 
     public Location getCurrentLocation() {
@@ -153,7 +143,7 @@ public class Model {
      *
      * @return a COPY of the List locations
      */
-    public List<Location> getLocations() {
+    private List<Location> getLocations() {
         return new ArrayList<>(locations);
     }
 }

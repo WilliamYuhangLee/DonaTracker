@@ -15,19 +15,18 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Objects;
+
 import edu.gatech.donatracker.R;
 import edu.gatech.donatracker.model.user.User;
 
 public class RegistrationActivity extends AppCompatActivity {
 
     private final String TAG = "RegistrationActivity.class";
+    private final FirebaseFirestore database = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth;
-    private FirebaseFirestore database = FirebaseFirestore.getInstance();
     private User user;
 
-    // UI references
-    private EditText mEmailView;
-    private EditText mPasswordView;
     private Spinner mAccountTypeSpinner;
 
     @Override
@@ -38,8 +37,9 @@ public class RegistrationActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         // Initialize UI references
-        mEmailView = findViewById(R.id.editText_registration_email);
-        mPasswordView = findViewById(R.id.editText_registration_password);
+        // UI references
+        EditText mEmailView = findViewById(R.id.editText_registration_email);
+        EditText mPasswordView = findViewById(R.id.editText_registration_password);
         mAccountTypeSpinner = findViewById(R.id.spinner_registration_account_type);
 
         // Set up the adapter for the account type spinner
@@ -58,18 +58,14 @@ public class RegistrationActivity extends AppCompatActivity {
 
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "createUserWithEmail:success");
-                        @NonNull FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                        @NonNull FirebaseUser firebaseUser = Objects.requireNonNull(mAuth.getCurrentUser());
                         String UID = firebaseUser.getUid();
 
                         // Create new User and save it to Model/Firebase
                         user = new User(UID, (User.UserType) mAccountTypeSpinner.getSelectedItem());
 //                        Model.getModel().addUser(user, UID);
                         database.collection("users").document(UID).set(user.wrapData())
-                                .addOnSuccessListener((v) -> {
-                                    Log.d(TAG, "User has been created and stored!");
-                                }).addOnFailureListener((v) -> {
-                            Log.d(TAG, "User creation failed!");
-                        });
+                                .addOnSuccessListener((v) -> Log.d(TAG, "User has been created and stored!")).addOnFailureListener((v) -> Log.d(TAG, "User creation failed!"));
 
                         // Go to the HomeActivity and clear task
                         // TODO: find a way to pass in the user type/permissions to customize home layout

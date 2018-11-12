@@ -10,6 +10,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Objects;
+
 import edu.gatech.donatracker.R;
 
 /**
@@ -19,7 +21,6 @@ import edu.gatech.donatracker.R;
  */
 public class ViewLocationMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
     private double Lat;
     private double Lng;
     private String Name;
@@ -40,7 +41,7 @@ public class ViewLocationMapActivity extends FragmentActivity implements OnMapRe
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        Objects.requireNonNull(mapFragment).getMapAsync(this);
     }
 
 
@@ -55,11 +56,10 @@ public class ViewLocationMapActivity extends FragmentActivity implements OnMapRe
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
         LatLng mLocationCord = new LatLng(Lat, Lng);
-        mMap.addMarker(new MarkerOptions().position(mLocationCord).title(Phone).snippet(Name));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(mLocationCord));
+        googleMap.addMarker(new MarkerOptions().position(mLocationCord).title(Phone).snippet(Name));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(mLocationCord));
     }
 }

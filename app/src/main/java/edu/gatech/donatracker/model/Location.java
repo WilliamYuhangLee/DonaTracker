@@ -83,13 +83,13 @@ public class Location implements Parcelable {
         this.website = website;
     }
 
+    @SuppressWarnings("unchecked")
     public static Location unwrapData(HashMap<String, Object> data) {
         return new Location((int) data.get("key"), (String) data.get("name"), (String) data.get("type"),
-                (List<String>) data
-                        .get("employees"), (List<String>) data.get
-                ("inventory"), (double) data.get("longitude"), (double) data.get("latitude"), (String) data.get
-                ("address"), (String) data.get("phone"),
-                (String) data.get("city"), (String) data.get("state"), (int) data.get("zip"), (String) data.get
+                (List<String>) data.get("employees"), (List<String>) data.get("inventory"),
+                (double) data.get("longitude"), (double) data.get("latitude"), (String) data.get
+                ("address"), (String) data.get("phone"), (String) data.get("city"),
+                (String) data.get("state"), (int) data.get("zip"), (String) data.get
                 ("website"));
     }
 
@@ -118,6 +118,7 @@ public class Location implements Parcelable {
     }
 
     public boolean addEmployees(List employees) {
+        //noinspection unchecked,unchecked
         return this.employees.addAll(employees);
     }
 
@@ -133,6 +134,7 @@ public class Location implements Parcelable {
         return inventory.add(donation);
     }
 
+    @SuppressWarnings("unchecked")
     public boolean addDonations(List donations) {
         return inventory.addAll(donations);
     }

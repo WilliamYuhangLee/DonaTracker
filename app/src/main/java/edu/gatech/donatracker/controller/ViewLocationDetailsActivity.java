@@ -23,26 +23,12 @@ import edu.gatech.donatracker.model.user.User;
  */
 public class ViewLocationDetailsActivity extends AppCompatActivity {
 
-    public static final String TAG = "ViewLocationDetailsActivity.class";
+    private static final String TAG = "ViewLocationDetailsActivity.class";
     // Models
     private Location currentLocation;
-    private FirebaseUser firebaseUser;
     private User user;
     private FirebaseFirestore database;
 
-
-    // UI References
-    private TextView textViewName;
-    private TextView textViewType;
-    private TextView textViewLongitude;
-    private TextView textViewLatitude;
-    private TextView textViewAddress;
-    private TextView textViewPhone;
-    private TextView textViewCity;
-    private TextView textViewState;
-    private TextView textViewZip;
-    private TextView textViewWebsite;
-    private Button buttonMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,17 +39,18 @@ public class ViewLocationDetailsActivity extends AppCompatActivity {
         user = getIntent().getParcelableExtra("User Model");
 
         // Initiate UI References
-        textViewName = findViewById(R.id.location_name);
-        textViewType = findViewById(R.id.location_type);
-        textViewLongitude = findViewById(R.id.location_longitude);
-        textViewLatitude = findViewById(R.id.location_latitude);
-        textViewAddress = findViewById(R.id.location_address);
-        textViewPhone = findViewById(R.id.location_phone);
-        textViewCity = findViewById(R.id.location_city);
-        textViewState = findViewById(R.id.location_state);
-        textViewZip = findViewById(R.id.location_zip);
-        textViewWebsite = findViewById(R.id.location_website);
-        buttonMap = findViewById(R.id.view_location_map);
+        // UI References
+        TextView textViewName = findViewById(R.id.location_name);
+        TextView textViewType = findViewById(R.id.location_type);
+        TextView textViewLongitude = findViewById(R.id.location_longitude);
+        TextView textViewLatitude = findViewById(R.id.location_latitude);
+        TextView textViewAddress = findViewById(R.id.location_address);
+        TextView textViewPhone = findViewById(R.id.location_phone);
+        TextView textViewCity = findViewById(R.id.location_city);
+        TextView textViewState = findViewById(R.id.location_state);
+        TextView textViewZip = findViewById(R.id.location_zip);
+        TextView textViewWebsite = findViewById(R.id.location_website);
+        Button buttonMap = findViewById(R.id.view_location_map);
 
         // Fill text fields with current Location info
         if (currentLocation != null) {
@@ -84,7 +71,7 @@ public class ViewLocationDetailsActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if (firebaseUser == null) {
             Intent intent = new Intent(this, WelcomeActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

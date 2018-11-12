@@ -26,17 +26,17 @@ public class User implements Parcelable, Serializable {
 
     // INSTANCE
     // Instance variables
-    protected String UID;
-    protected UserType userType;
-    protected String email;
-    protected String username;
-    protected boolean isLocked;
+    private String UID;
+    private UserType userType;
+    private String email;
+    private String username;
+    private boolean isLocked;
 
     // Constructors
     public User() {
     }
 
-    public User(String UID) {
+    private User(String UID) {
         this(UID, UserType.REGULAR_USER);
     }
 
@@ -152,13 +152,13 @@ public class User implements Parcelable, Serializable {
         LOCATION_EMPLOYEE("Location Employee"),
         REGULAR_USER("Regular User");
 
-        private String representation;
+        private final String representation;
 
         UserType(String representation) {
             this.representation = representation;
         }
 
-        public static UserType fromString(String string) {
+        static UserType fromString(String string) {
             for (UserType userType : UserType.values()) {
                 if (userType.representation.equalsIgnoreCase(string)) {
                     return userType;

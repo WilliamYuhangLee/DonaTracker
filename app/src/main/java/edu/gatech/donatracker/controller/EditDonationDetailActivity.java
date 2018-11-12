@@ -17,7 +17,7 @@ public class EditDonationDetailActivity extends AppCompatActivity {
     /* ************************
                 Widgets we will need for binding and getting information
              */
-    public static final String TAG = "EditDonationDetailActivity.class";
+    private static final String TAG = "EditDonationDetailActivity.class";
 
     private EditText editTextShortDescription;
     private EditText editTextFullDescription;
@@ -35,8 +35,8 @@ public class EditDonationDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_donation_detail);
 
-        /**
-         * Grab the dialog widgets so we can get info for later
+        /*
+          Grab the dialog widgets so we can get info for later
          */
         editTextShortDescription = findViewById(R.id.edit_short_description);
         editTextFullDescription = findViewById(R.id.edit_full_description);
@@ -56,7 +56,7 @@ public class EditDonationDetailActivity extends AppCompatActivity {
             editTextValueInUSD.setText(String.format(getResources().getConfiguration().getLocales().get(0), "%,.2f",
                     currentDonation.getValueInUSD()));
             editTextComment.setText(currentDonation.getComments());
-            editTextCategory.setText(currentDonation.getCategory() == null ? "": currentDonation.getCategory());
+            editTextCategory.setText(currentDonation.getCategory() == null ? "" : currentDonation.getCategory());
             editing = true;
         } else {
             currentDonation = new Donation(currentLocation.getKey());
@@ -86,22 +86,12 @@ public class EditDonationDetailActivity extends AppCompatActivity {
         if (!editing) {
             donationRef.set(currentDonation).addOnSuccessListener((v) -> {
                 Log.d(TAG, "Donation creation and upload successful!");
-                currentLocation.addDonation(currentDonation.getUuid());
+                boolean addedSuccessfully = currentLocation.addDonation(currentDonation.getUuid());
                 DocumentReference locationRef = FirebaseFirestore.getInstance().collection("locations").document(String.valueOf(currentLocation.getKey()));
-                locationRef.set(currentLocation).addOnSuccessListener(v2 -> {
-                    Log.d(TAG, "Donation inventory update successful!");
-                }).addOnFailureListener(e -> {
-                    Log.w(TAG, "Donation inventory update failed!", e);
-                });
-            }).addOnFailureListener(e -> {
-                Log.d(TAG, "Donation creation and upload failed!", e);
-            });
+                locationRef.set(currentLocation).addOnSuccessListener(v2 -> Log.d(TAG, "Donation inventory update successful!")).addOnFailureListener(e -> Log.w(TAG, "Donation inventory update failed!", e));
+            }).addOnFailureListener(e -> Log.d(TAG, "Donation creation and upload failed!", e));
         } else {
-            donationRef.set(currentDonation).addOnSuccessListener((v) -> {
-                Log.d(TAG, "Donation edit and upload successful!");
-            }).addOnFailureListener((e) -> {
-                Log.d(TAG, "Donation edit and upload failed!", e);
-            });
+            donationRef.set(currentDonation).addOnSuccessListener((v) -> Log.d(TAG, "Donation edit and upload successful!")).addOnFailureListener((e) -> Log.d(TAG, "Donation edit and upload failed!", e));
         }
         finish();
     }
