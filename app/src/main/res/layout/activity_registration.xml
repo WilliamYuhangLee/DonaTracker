@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="120dp"
-        android:hint="Enter an email"
         android:layout_marginTop="52dp"
         android:ems="10"
         android:inputType="textEmailAddress"
@@ -41,7 +40,6 @@
         android:layout_marginTop="24dp"
         android:ems="10"
         android:inputType="textPassword"
-        android:hint='Enter a password'
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/editText_registration_email"
