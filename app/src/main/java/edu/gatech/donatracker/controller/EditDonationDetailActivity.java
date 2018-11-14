@@ -18,6 +18,7 @@ public class EditDonationDetailActivity extends AppCompatActivity {
                 Widgets we will need for binding and getting information
              */
     private static final String TAG = "EditDonationDetailActivity.class";
+    private FirebaseFirestore firebaseFirestore;
 
     private EditText editTextShortDescription;
     private EditText editTextFullDescription;
@@ -34,6 +35,7 @@ public class EditDonationDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_donation_detail);
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
         /*
           Grab the dialog widgets so we can get info for later
@@ -74,20 +76,25 @@ public class EditDonationDetailActivity extends AppCompatActivity {
 
         currentDonation.setShortDescription(editTextShortDescription.getText().toString());
         currentDonation.setFullDescription(editTextFullDescription.getText().toString());
-        currentDonation.setValueInUSD(Double.parseDouble(editTextValueInUSD.getText().toString()));
+        try {
+            currentDonation.setValueInUSD(Double.parseDouble(editTextValueInUSD.getText().toString()));
+        } catch (NumberFormatException e) {
+            Log.d(TAG, "Invalid USD input, please enter a valid input");
+            currentDonation.setValueInUSD(0);
+        }
         currentDonation.setComments(editTextComment.getText().toString());
         currentDonation.setCategory(editTextCategory.getText().toString());
 
         Log.d("Edit", (editing ? "Edit" : "Add") + " donation data: " + currentDonation.toString());
 
-        DocumentReference donationRef = FirebaseFirestore.getInstance().collection("donations").document(currentDonation
+        DocumentReference donationRef = firebaseFirestore.collection("donations").document(currentDonation
                 .getUuid());
 
         if (!editing) {
             donationRef.set(currentDonation).addOnSuccessListener((v) -> {
                 Log.d(TAG, "Donation creation and upload successful!");
                 boolean addedSuccessfully = currentLocation.addDonation(currentDonation.getUuid());
-                DocumentReference locationRef = FirebaseFirestore.getInstance().collection("locations").document(String.valueOf(currentLocation.getKey()));
+                DocumentReference locationRef = firebaseFirestore.collection("locations").document(String.valueOf(currentLocation.getKey()));
                 locationRef.set(currentLocation).addOnSuccessListener(v2 -> Log.d(TAG, "Donation inventory update successful!")).addOnFailureListener(e -> Log.w(TAG, "Donation inventory update failed!", e));
             }).addOnFailureListener(e -> Log.d(TAG, "Donation creation and upload failed!", e));
         } else {
