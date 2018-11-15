@@ -19,10 +19,12 @@
     <string name="cancel">Cancel</string>
     <string name="log_out">Log out</string>
     <string name="account_type">ACCOUNT TYPE</string>
-    <string name="signup">Sign Up</string>
+    <string name="signUp">Sign Up</string>
+    <string name="signIn">Sign In</string>
 
     <!-- Strings related to home page -->
     <string name="locations">Locations</string>
+    <string name="welcome">Welcome!</string>
 
     <!-- Strings related to Location views -->
     <string name="website">Website:\u0020</string>

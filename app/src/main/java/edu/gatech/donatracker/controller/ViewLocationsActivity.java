@@ -123,7 +123,7 @@ public class ViewLocationsActivity extends AppCompatActivity {
 
         @NonNull
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             /*
 
               This sets up the view for each individual item in the recycler display
@@ -146,7 +146,7 @@ public class ViewLocationsActivity extends AppCompatActivity {
             holder.myLocation = myLocations.get(position);
             /*
               Now we bind the data to the widgets.  In this case, pretty simple, put the id in one
-              textview and the string rep of a course in the other.
+              textView and the string rep of a course in the other.
              */
             holder.mContentView.setText(myLocations.get(position).toString());
 

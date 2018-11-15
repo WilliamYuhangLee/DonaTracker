@@ -31,8 +31,8 @@ import edu.gatech.donatracker.model.user.User;
 
 public class ViewDonationsActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
-    private static final String TAG = "ViewDonationsActivity.class";
-    private SimpleDonationRecyclerViewAdapter recyclerViewAdapter;
+    private static final String TAG = ViewDonationsActivity.class.getSimpleName();
+    SimpleDonationRecyclerViewAdapter recyclerViewAdapter;
     // Models
     private Location currentLocation;
     private DocumentReference locationRef;
@@ -66,8 +66,8 @@ public class ViewDonationsActivity extends AppCompatActivity implements SearchVi
 
         // Initiate where to find search and set query listener
         //for searching
-        SearchView editsearch = findViewById(R.id.search);
-        editsearch.setOnQueryTextListener(this);
+        SearchView editSearch = findViewById(R.id.search);
+        editSearch.setOnQueryTextListener(this);
 
         // Set up adapters
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -214,7 +214,7 @@ public class ViewDonationsActivity extends AppCompatActivity implements SearchVi
             holder.myDonation = myDonations.get(position);
             /*
               Now we bind the data to the widgets.  In this case, pretty simple, put the id in one
-              textview and the string rep of a course in the other.
+              textView and the string rep of a course in the other.
              */
             holder.mContentView.setText(String.format("Name: %s  Category: %s",
                     myDonations.get(position).getShortDescription(),

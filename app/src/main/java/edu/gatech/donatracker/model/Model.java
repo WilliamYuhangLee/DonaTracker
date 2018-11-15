@@ -24,7 +24,7 @@ public class Model {
     private List<Location> locations;
     // Hold current Location
     private Location currentLocation;
-    // Hold current donation, TODO change this to paresal
+    // Hold current donation
     private Donation currentDonation;
 
     // Constructor

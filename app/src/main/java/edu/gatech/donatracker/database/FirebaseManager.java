@@ -23,6 +23,7 @@ import java.util.function.Function;
  * <p>
  * Handles all operations on Firebase
  */
+@SuppressWarnings("WeakerAccess")
 public class FirebaseManager {
 
     private static final String TAG = FirebaseManager.class.getSimpleName();
@@ -60,10 +61,16 @@ public class FirebaseManager {
      * @param path a number of Strings that contain IDs of Collections/Documents in each level of the path
      * @return a Document Reference
      */
-    private static DocumentReference getDocRef(@NonNull String... path) {
-        if (path.length % 2 == 1) {
-            Exception e = new IllegalArgumentException("Number of args must be even!");
+    public static DocumentReference getDocRef(String... path) {
+        if (path == null || path.length == 0) {
+            IllegalArgumentException e = new IllegalArgumentException("No document path passed in!");
             Log.e(TAG, "Illegal document path", e);
+            throw e;
+        }
+        if (path.length % 2 == 1) {
+            IllegalArgumentException e = new IllegalArgumentException("Number of args must be even!");
+            Log.e(TAG, "Illegal document path", e);
+            throw e;
         }
         CollectionReference collection = FirebaseFirestore.getInstance().collection(path[0]);
         DocumentReference document = collection.document(path[1]);
@@ -106,10 +113,16 @@ public class FirebaseManager {
      * @param path a number of Strings that contain IDs of Collections/Documents in each level of the path
      * @return a Collection Reference
      */
-    private static CollectionReference getColRef(@NonNull String... path) {
-        if (path.length % 2 == 0) {
-            Exception e = new IllegalArgumentException("Number of args must be odd!");
+    public static CollectionReference getColRef(String... path) {
+        if (path == null || path.length == 0) {
+            IllegalArgumentException e = new IllegalArgumentException("No collection path passed in!");
             Log.e(TAG, "Illegal collection path", e);
+            throw e;
+        }
+        if (path.length % 2 == 0) {
+            IllegalArgumentException e = new IllegalArgumentException("Number of args must be odd!");
+            Log.e(TAG, "Illegal collection path", e);
+            throw e;
         }
         CollectionReference collection = FirebaseFirestore.getInstance().collection(path[0]);
         if (path.length > 1) {
@@ -142,7 +155,7 @@ public class FirebaseManager {
      * @param docRef   what document needs to be retrieved
      * @param <T>      the type of object to be converted into
      */
-    private static <T> void getObject(Activity activity, Class<T> type, QueryResultHandler<T> handler,
+    public static <T> void getObject(Activity activity, Class<T> type, QueryResultHandler<T> handler,
                                       DocumentReference docRef) {
         docRef.get()
                 .addOnSuccessListener(activity, documentSnapshot -> {
@@ -194,7 +207,7 @@ public class FirebaseManager {
      * @param docRef    what document needs to be retrieved
      * @param <T>       the type of the object
      */
-    private static <T> void getObject(Activity activity, Function<Map<String, Object>, T> unwrapper,
+    public static <T> void getObject(Activity activity, Function<Map<String, Object>, T> unwrapper,
                                       QueryResultHandler<T> handler, DocumentReference docRef) {
         docRef.get()
                 .addOnSuccessListener(activity, documentSnapshot -> {
@@ -251,7 +264,7 @@ public class FirebaseManager {
      * @param colRef            the Reference of the Collection from which objects are to be retrieved
      * @param <T>               the type of the objects
      */
-    private static <T> void getObjects(Activity activity, Class<T> type, List<T> listToFillObjects,
+    public static <T> void getObjects(Activity activity, Class<T> type, List<T> listToFillObjects,
                                        CollectionReference colRef) {
         if (!listToFillObjects.isEmpty()) {
             Log.w(activity.getClass().getSimpleName(), "Warning: Adding objects into a non-empty list!");
@@ -305,7 +318,7 @@ public class FirebaseManager {
      * @param colRef            the Reference of the Collection from which objects are to be retrieved
      * @param <T>               the type of the objects
      */
-    private static <T> void getObjects(Activity activity, Function<Map<String, Object>, T> unwrapper, List<T>
+    public static <T> void getObjects(Activity activity, Function<Map<String, Object>, T> unwrapper, List<T>
             listToFillObjects, CollectionReference colRef) {
         if (!listToFillObjects.isEmpty()) {
             Log.w(activity.getClass().getSimpleName(), "Warning: Adding objects into a non-empty list!");
@@ -595,7 +608,7 @@ public class FirebaseManager {
      * @param colRef       the Reference of the Collection whose changes are listened for
      * @param <T>          the type of the objects
      */
-    private static <T> void updateObjects(Activity activity, Function<Map<String, Object>, T> unwrapper, List<T>
+    public static <T> void updateObjects(Activity activity, Function<Map<String, Object>, T> unwrapper, List<T>
             listToUpdate, UpdateHandler
                                                   handler, CollectionReference colRef) {
         colRef.addSnapshotListener(activity, (queryDocumentSnapshots, e) -> {
@@ -688,7 +701,7 @@ public class FirebaseManager {
      * @param map      represents an object, keys = field names, values = field values
      * @param docRef   the destination of this upload
      */
-    private static void uploadObject(Activity activity, Map<String, Object> map, DocumentReference docRef) {
+    public static void uploadObject(Activity activity, Map<String, Object> map, DocumentReference docRef) {
         docRef.set(map).addOnSuccessListener(activity, v -> Log.d(activity.getClass().getSimpleName(),
                 String.format("%s[%s] upload successful.", docRef.getParent().getId(), docRef.getId()))).addOnFailureListener(activity, e -> Log.e(activity.getClass().getSimpleName(),
                 String.format("%s[%s] upload failed!", docRef.getParent().getId(), docRef.getId()), e));
@@ -734,7 +747,7 @@ public class FirebaseManager {
      * The task is attached to the given Activity, and is detached when either
      * the task or the Activity is finished.
      */
-    private static void uploadObject(Activity activity, Map<String, Object> map,
+    public static void uploadObject(Activity activity, Map<String, Object> map,
                                      SetOptions setOption, DocumentReference docRef) {
         docRef.set(map, setOption).addOnSuccessListener(activity, v -> Log.d(activity.getClass().getSimpleName(),
                 String.format("%s[%s] upload successful.", docRef.getParent().getId(), docRef.getId()))).addOnFailureListener(activity, e -> Log.e(activity.getClass().getSimpleName(),
@@ -783,7 +796,7 @@ public class FirebaseManager {
      * @param docRef   the destination of this upload
      * @param <T>      the type of the object
      */
-    private static <T> void uploadObject(Activity activity, T object,
+    public static <T> void uploadObject(Activity activity, T object,
                                          Function<T, Map<String, Object>> wrapper, DocumentReference docRef) {
         uploadObject(activity, wrapper.apply(object), docRef);
     }
@@ -834,7 +847,7 @@ public class FirebaseManager {
      * The task is attached to the given Activity, and is detached when either
      * the task or the Activity is finished.
      */
-    private static <T> void uploadObject(Activity activity, T object, Function<T, Map<String, Object>> wrapper,
+    public static <T> void uploadObject(Activity activity, T object, Function<T, Map<String, Object>> wrapper,
                                          SetOptions setOption, DocumentReference docRef) {
         uploadObject(activity, wrapper.apply(object), setOption, docRef);
     }
@@ -1018,7 +1031,7 @@ public class FirebaseManager {
      * @param activity where the task is attached to
      * @param docRef   the Document to be deleted
      */
-    private static void deleteDocument(Activity activity, DocumentReference docRef) {
+    public static void deleteDocument(Activity activity, DocumentReference docRef) {
         docRef.delete().addOnSuccessListener(activity, aVoid -> Log.d(activity.getClass().getSimpleName(),
                 String.format("%s[%s] delete successful.", docRef.getParent().getId(), docRef.getId()))).addOnFailureListener(activity, e -> Log.e(activity.getClass().getSimpleName(),
                 String.format("%s[%s] delete failed!", docRef.getParent().getId(), docRef.getId()), e));
@@ -1116,7 +1129,7 @@ public class FirebaseManager {
      * @param docRef    the Document to add fields into
      * @param fieldsMap a Map that represents the fields to be added
      */
-    private static void addFields(Activity activity, DocumentReference docRef, Map<String, Object> fieldsMap) {
+    public static void addFields(Activity activity, DocumentReference docRef, Map<String, Object> fieldsMap) {
         uploadObject(activity, fieldsMap, SetOptions.merge(), docRef);
     }
 
@@ -1178,7 +1191,7 @@ public class FirebaseManager {
      * @param docRef    the destination of this update
      * @param fieldsMap represents the fields to update, keys = field names, values = field values
      */
-    private static void updateFields(Activity activity, DocumentReference docRef, Map<String, Object> fieldsMap) {
+    public static void updateFields(Activity activity, DocumentReference docRef, Map<String, Object> fieldsMap) {
         docRef.update(fieldsMap).addOnSuccessListener(activity, v -> Log.d(activity.getClass().getSimpleName(),
                 String.format("%s[%s] fields update successful.", docRef.getParent().getId(), docRef.getId()))).addOnFailureListener(e -> Log.e(activity.getClass().getSimpleName(),
                 String.format("%s[%s] fields update failed!", docRef.getParent().getId(), docRef.getId()), e));

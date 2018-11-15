@@ -79,7 +79,7 @@ public class HomeActivity extends AppCompatActivity {
         }
         FirebaseManager.updateObject(this, User::unwrapData, result -> {
             user = result;
-            greeting_textView.setText(String.format("Welcome, %s", user.getUserType()));
+            greeting_textView.setText(String.format("Welcome, %s!", user.getUserType()));
         }, userDocRef);
     }
 
