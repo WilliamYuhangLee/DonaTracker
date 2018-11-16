@@ -31,12 +31,18 @@ public class LocationTest {
         rawListNOTNULL.add(1, dummyData);
     }
 
+    /**
+     * Created by Vincent Lieng
+     */
     @Test(timeout = TIMEOUT)
     public void containsAddressTest() {
         List<Location> list = LocationFactory.parseLocations(rawListNOTNULL);
         assertFalse(list.get(0).containsAddress("address"));
     }
 
+    /**
+     * Created by Songming Liu
+     */
     @Test(timeout = TIMEOUT)
     public void containsInventoryTest() {
         List<Location> list = LocationFactory.parseLocations(rawListNOTNULL);
