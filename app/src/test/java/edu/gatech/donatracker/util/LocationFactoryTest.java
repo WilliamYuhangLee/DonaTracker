@@ -1,4 +1,4 @@
-package edu.gatech.donatracker;
+package edu.gatech.donatracker.util;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
  */
 
 
-public class LocationFactoryUnitTest {
+public class LocationFactoryTest {
 
     private static final int TIMEOUT = 200;
     private List<String[]> rawListNULL = null;

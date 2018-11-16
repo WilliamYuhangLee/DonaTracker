@@ -146,16 +146,4 @@ public class Model {
     private List<Location> getLocations() {
         return new ArrayList<>(locations);
     }
-
-    /**
-     * Check of a list of locations contains a specific location
-     * @param location specific location to check for
-     * @return if the specific locaiton is contained in a list of locations
-     */
-    public boolean containsLocation(Location location) {
-        if (locations.contains(location)) {
-            return true;
-        }
-        return false;
-    }
 }

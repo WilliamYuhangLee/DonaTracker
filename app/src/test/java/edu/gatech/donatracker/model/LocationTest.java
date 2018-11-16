@@ -1,4 +1,4 @@
-package edu.gatech.donatracker;
+package edu.gatech.donatracker.model;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +14,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 
-public class AddressTest {
+public class LocationTest {
     private static final int TIMEOUT = 200;
     private List<String[]> rawListNULL = null;
     private List<String[]> rawListNOTNULL = new ArrayList<>();
@@ -34,6 +34,12 @@ public class AddressTest {
     @Test(timeout = TIMEOUT)
     public void containsAddressTest() {
         List<Location> list = LocationFactory.parseLocations(rawListNOTNULL);
-        assertFalse(list.get(0).containsInventory("address"));
+        assertFalse(list.get(0).containsAddress("address"));
+    }
+
+    @Test(timeout = TIMEOUT)
+    public void containsInventoryTest() {
+        List<Location> list = LocationFactory.parseLocations(rawListNOTNULL);
+        assertFalse(list.get(0).containsInventory("inventory"));
     }
 }
