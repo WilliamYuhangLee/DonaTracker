@@ -253,6 +253,20 @@ public class Location implements Parcelable {
         this.website = website;
     }
 
+    public boolean containsInventory(String inventory) {
+        if (this.inventory.contains(inventory)) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean containsAddress(String address) {
+        if (this.inventory.contains(address)) {
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public String toString() {
         return this.getName();
